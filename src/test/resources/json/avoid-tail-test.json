@@ -1,0 +1,303 @@
+{
+    "game": {
+        "id": "8c6a94fd-8ac5-4e6d-9cfc-ef2d7e3d6781",
+        "ruleset": {
+            "name": "solo",
+            "version": "v1.0.23",
+            "settings": {
+                "foodSpawnChance": 15,
+                "minimumFood": 1,
+                "hazardDamagePerTurn": 0,
+                "royale": {
+                    "shrinkEveryNTurns": 0
+                },
+                "squad": {
+                    "allowBodyCollisions": false,
+                    "sharedElimination": false,
+                    "sharedHealth": false,
+                    "sharedLength": false
+                }
+            }
+        },
+        "timeout": 500,
+        "source": "challenge"
+    },
+    "turn": 131,
+    "board": {
+        "height": 7,
+        "width": 7,
+        "snakes": [
+            {
+                "id": "gs_dgjMDJWhtdqg7Xtq8HJfqYbR",
+                "name": "Dev",
+                "latency": "38",
+                "health": 95,
+                "body": [
+                    {
+                        "x": 3,
+                        "y": 0
+                    },
+                    {
+                        "x": 4,
+                        "y": 0
+                    },
+                    {
+                        "x": 5,
+                        "y": 0
+                    },
+                    {
+                        "x": 6,
+                        "y": 0
+                    },
+                    {
+                        "x": 6,
+                        "y": 1
+                    },
+                    {
+                        "x": 6,
+                        "y": 2
+                    },
+                    {
+                        "x": 6,
+                        "y": 3
+                    },
+                    {
+                        "x": 6,
+                        "y": 4
+                    },
+                    {
+                        "x": 6,
+                        "y": 5
+                    },
+                    {
+                        "x": 5,
+                        "y": 5
+                    },
+                    {
+                        "x": 5,
+                        "y": 6
+                    },
+                    {
+                        "x": 4,
+                        "y": 6
+                    },
+                    {
+                        "x": 4,
+                        "y": 5
+                    },
+                    {
+                        "x": 4,
+                        "y": 4
+                    },
+                    {
+                        "x": 4,
+                        "y": 3
+                    },
+                    {
+                        "x": 3,
+                        "y": 3
+                    },
+                    {
+                        "x": 2,
+                        "y": 3
+                    },
+                    {
+                        "x": 2,
+                        "y": 4
+                    },
+                    {
+                        "x": 1,
+                        "y": 4
+                    },
+                    {
+                        "x": 1,
+                        "y": 3
+                    },
+                    {
+                        "x": 1,
+                        "y": 2
+                    },
+                    {
+                        "x": 0,
+                        "y": 2
+                    },
+                    {
+                        "x": 0,
+                        "y": 1
+                    },
+                    {
+                        "x": 0,
+                        "y": 0
+                    },
+                    {
+                        "x": 1,
+                        "y": 0
+                    },
+                    {
+                        "x": 2,
+                        "y": 0
+                    },
+                    {
+                        "x": 2,
+                        "y": 1
+                    }
+                ],
+                "head": {
+                    "x": 3,
+                    "y": 0
+                },
+                "length": 27,
+                "shout": "",
+                "squad": "",
+                "customizations": {
+                    "color": "#008080",
+                    "head": "pixel",
+                    "tail": "skinny"
+                }
+            }
+        ],
+        "food": [
+            {
+                "x": 4,
+                "y": 1
+            },
+            {
+                "x": 2,
+                "y": 2
+            },
+            {
+                "x": 5,
+                "y": 1
+            }
+        ],
+        "hazards": []
+    },
+    "you": {
+        "id": "gs_dgjMDJWhtdqg7Xtq8HJfqYbR",
+        "n ame": "Dev",
+        "latency": "38",
+        "health": 95,
+        "body": [
+            {
+                "x": 3,
+                "y": 0
+            },
+            {
+                "x": 4,
+                "y": 0
+            },
+            {
+                "x": 5,
+                "y": 0
+            },
+            {
+                " x": 6,
+                "y": 0
+            },
+            {
+                "x": 6,
+                "y": 1
+            },
+            {
+                "x": 6,
+                "y": 2
+            },
+            {
+                "x": 6,
+                "y": 3
+            },
+            {
+                "x": 6,
+                "y": 4
+            },
+            {
+                "x": 6,
+                "y": 5
+            },
+            {
+                "x": 5,
+                " y": 5
+            },
+            {
+                "x": 5,
+                "y": 6
+            },
+            {
+                "x": 4,
+                "y": 6
+            },
+            {
+                "x": 4,
+                "y": 5
+            },
+            {
+                "x": 4,
+                "y": 4
+            },
+            {
+                "x": 4,
+                "y": 3
+            },
+            {
+                "x": 3,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 3
+            },
+            {
+                "x": 2,
+                "y": 4
+            },
+            {
+                "x": 1,
+                "y": 4
+            },
+            {
+                "x": 1,
+                "y": 3
+            },
+            {
+                "x": 1,
+                "y": 2
+            },
+            {
+                "x": 0,
+                "y": 2
+            },
+            {
+                "x": 0,
+                "y": 1
+            },
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 1,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 0
+            },
+            {
+                "x": 2,
+                "y": 1
+            }
+        ],
+        "head": {
+            "x": 3,
+            "y": 0
+        },
+        "length": 27,
+        "shout": "",
+        "squad": "",
+        "customizations": {
+            "color": "#008080",
+            "head": "pixel",
+            "tail": "s kinny"
+        }
+    }
+}

@@ -1,0 +1,12 @@
+
+app:
+  snake:
+    name: Smarty Cloud
+    strategy: FindFood
+    color: "#888888"
+    head: default
+    tail: default
+
+server:
+  port: 8080
+  host: 0.0.0.0
