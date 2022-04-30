@@ -9,12 +9,15 @@ public class GameState {
   @Getter
   @Setter
   private Game game;
+
   @Getter
   @Setter
   private Board board;
+
   @Getter
   @Setter
   private int turn;
+
   @Getter
   @Setter
   private Snake you;
@@ -22,16 +25,42 @@ public class GameState {
   public static class Game {
     @Getter
     @Setter
-    private String id;
+    private String id, source;
+
+    @Getter
+    @Setter
+    private Ruleset ruleset;
+
+    @Getter
+    @Setter
+    private int timeout;
+  }
+
+  public static class Ruleset {
+    @Getter
+    @Setter
+    private String name, version;
+
+    @Getter
+    @Setter
+    private GameSettings settings;
+  }
+
+  public static class GameSettings {
+    @Getter
+    @Setter
+    private int foodSpawnChance;
   }
 
   public static class Board {
     @Getter
     @Setter
     private int height, width;
+
     @Getter
     @Setter
     private List<Point> food, hazards;
+
     @Getter
     @Setter
     private List<Snake> snakes;
@@ -55,12 +84,15 @@ public class GameState {
     @Getter
     @Setter
     private String id, name, shout;
+
     @Getter
     @Setter
     private int health, length;
+
     @Getter
     @Setter
     private List<Point> body;
+
     @Getter
     @Setter
     private Point head;
@@ -89,7 +121,7 @@ public class GameState {
       return this.body.get(this.body.size() - 1 - offset);
     }
 
-    public boolean isCatchingTail(Context context) {
+    public boolean isCatchingTail() {
       final Point nextPosition = this.head().move(this.headDirection());
 
       return nextPosition.equals(this.tail());

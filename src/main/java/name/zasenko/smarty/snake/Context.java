@@ -35,8 +35,4 @@ public class Context {
   public Direction move(Strategy strategy) {
     return strategy.findMove(this);
   }
-
-  public GameState getGameState() {
-    return gameState;
-  }
 }

@@ -13,7 +13,7 @@ public class Graph {
 
   Graph(GameState.Board board) {
     this.board = board;
-    obstacles = new TreeMap<Integer, Integer>();
+    obstacles = new TreeMap<>();
 
     for (GameState.Snake snake : board.getSnakes()) {
       int ttl = 0;
@@ -39,16 +39,16 @@ public class Graph {
 
   public List<Integer> pointsAround(Point startPoint, int time) {
     return Stream.of(Direction.values())
-        .map(direction -> startPoint.move(direction))
-        .filter(p -> board.isValid(p))
-        .map(p -> board.valueOfPoint(p))
+        .map(startPoint::move)
+        .filter(board::isValid)
+        .map(board::valueOfPoint)
         .filter(p -> !obstacles.containsKey(p) || obstacles.get(p) < time)
         .collect(Collectors.toList());
   }
 
   public List<Integer> adj(Point startPoint, int time) {
     if (obstacles.containsKey(board.valueOfPoint(startPoint)))
-      return new ArrayList<Integer>();
+      return new ArrayList<>();
 
     return pointsAround(startPoint, time);
   }
@@ -58,10 +58,10 @@ public class Graph {
   }
 
   public class CC {
-    private boolean[] marked;
-    private int[] id;
+    private final boolean[] marked;
+    private final int[] id;
     private int count;
-    private int[] componentsSize;
+    private final int[] componentsSize;
 
     public CC() {
       Graph G = Graph.this;

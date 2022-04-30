@@ -35,7 +35,8 @@ public enum Direction {
       case left:
         return Direction.up;
     }
-    return null;
+
+    throw new RuntimeException("Unexpected direction");
   }
 
   public Direction rotateCounterclockwise() {
@@ -49,7 +50,8 @@ public enum Direction {
       case right:
         return Direction.up;
     }
-    return null;
+
+    throw new RuntimeException("Unexpected direction");
   }
 
   private static final Point[] directionToOffset = {

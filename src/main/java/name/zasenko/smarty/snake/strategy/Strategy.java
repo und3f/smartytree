@@ -4,5 +4,5 @@ import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 
 public interface Strategy {
-    public Direction findMove(Context ctx);
+    Direction findMove(Context ctx);
 }

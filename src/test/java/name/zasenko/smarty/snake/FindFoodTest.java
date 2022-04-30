@@ -18,24 +18,23 @@ public class FindFoodTest extends BaseUnitTestHelper {
     }
 
     @Test
-    void MoveDecisionToTailTest() throws JsonProcessingException, IOException {
+    void MoveDecisionToTailTest() throws IOException {
         assertEquals(Direction.up, this.RunStrategy("tail-test-state"));
     }
 
     @Test
-    void MoveDecisionToTail2Test() throws JsonProcessingException, IOException {
+    void MoveDecisionToTail2Test() throws IOException {
         assertEquals(Direction.left, this.RunStrategy("tail-test2-state"));
+    }
+
+    @Test
+    void AvoidClosedSpace() throws IOException {
+        assertEquals(Direction.left, this.RunStrategy("findfood-closed-test"));
     }
 
     @Disabled
     @Test
-    void EatNearTail() throws JsonProcessingException, IOException {
+    void EatNearTail() throws IOException {
         assertEquals(Direction.down, this.RunStrategy("findfood-cycle-test"));
     }
-
-    @Test
-    void AvoidClosedSpace() throws JsonProcessingException, IOException {
-        assertEquals(Direction.left, this.RunStrategy("findfood-closed-test"));
-    }
-
 }

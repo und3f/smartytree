@@ -31,7 +31,7 @@ public class Utils {
         if (possibleMoves.size() == 1)
             return moveForward(context, possibleMoves);
 
-        Set<Direction> possibleMovesToTarget = Arrays.asList(context.getHead().directionTo(target)).stream()
+        Set<Direction> possibleMovesToTarget = Arrays.stream(context.getHead().directionTo(target))
                 .distinct()
                 .filter(possibleMoves::contains)
                 .collect(Collectors.toSet());

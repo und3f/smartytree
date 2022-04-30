@@ -1,10 +1,5 @@
 package name.zasenko.smarty;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
 import io.helidon.common.http.Http;
 import io.helidon.config.Config;
 import io.helidon.webserver.Routing;
@@ -25,16 +20,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SnakeService implements Service {
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
     private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
 
     private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
     public static final String CONFIG_PREFIX = "app.snake.";
     public static final String DEFAULT_SKIN = "default";
-
-    private final String API_VERSION = "1";
-    private final String AUTHOR = "Serhii Zasenko";
-    private final String VERSION = "0.0.1-beta";
 
     private final String name;
     private final String color;
@@ -63,6 +53,10 @@ public class SnakeService implements Service {
     }
 
     public void information(ServerRequest request, ServerResponse response) {
+        String API_VERSION = "1";
+        String AUTHOR = "Serhii Zasenko";
+        String VERSION = "0.0.1-beta";
+
         JsonObject returnObject = JSON.createObjectBuilder()
                 .add("apiversion", API_VERSION)
                 .add("name", this.name)
@@ -81,29 +75,15 @@ public class SnakeService implements Service {
     }
 
     public void turn(ServerRequest request, ServerResponse response) {
-        request.content().as(JsonNode.class)
-                .thenAccept(jn -> performTurn(jn, response))
-                .exceptionally(ex -> processErrors(ex, request, response));
+        request.content().as(GameState.class)
+                .thenAccept(gameState -> performTurn(gameState, response))
+                .exceptionally(ex -> processErrors(ex, response));
     }
 
-    private void performTurn(JsonNode jn, ServerResponse response) {
-        GameState gameState;
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-            ObjectReader reader = objectMapper.readerFor(new TypeReference<GameState>() {});
-
-            gameState = reader.readValue(jn);
-        } catch (java.io.IOException e) {
-            LOGGER.log(Level.FINE, "Internal error", e);
-            error(response);
-            return;
-        }
+    private void performTurn(GameState gameState, ServerResponse response) {
+        LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
 
         final String move = new Context(gameState).move(strategy).toString();
-
-        LOGGER.log(Level.INFO, "MOVE {}", move);
 
         JsonObject returnObject = JSON.createObjectBuilder()
                 .add("move", move)
@@ -120,14 +100,7 @@ public class SnakeService implements Service {
         response.send(returnObject);
     }
 
-    private void error(ServerResponse response) {
-        JsonObject jsonErrorObject = JSON.createObjectBuilder()
-                .add("error", "Internal error")
-                .build();
-        response.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(jsonErrorObject);
-    }
-
-    private static <T> T processErrors(Throwable ex, ServerRequest request, ServerResponse response) {
+    private static <T> T processErrors(Throwable ex, ServerResponse response) {
 
         if (ex.getCause() instanceof JsonException){
 
@@ -138,7 +111,7 @@ public class SnakeService implements Service {
             response.status(Http.Status.BAD_REQUEST_400).send(jsonErrorObject);
         }  else {
 
-            LOGGER.log(Level.FINE, "Internal error", ex);
+            LOGGER.log(Level.SEVERE, "Internal error {0}", ex);
             JsonObject jsonErrorObject = JSON.createObjectBuilder()
                     .add("error", "Internal error")
                     .build();

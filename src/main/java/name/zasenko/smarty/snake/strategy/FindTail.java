@@ -7,7 +7,7 @@ import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
-import java.util.List;
+import java.util.stream.Stream;
 
 public class FindTail implements Strategy {
     final static int MinHealth = 10;
@@ -22,8 +22,7 @@ public class FindTail implements Strategy {
             final var food = ctx.getBoard().getFood();
             final var head = ctx.getHead();
 
-            return List.of(towardsTail, towardsTail.rotateClockwise(), towardsTail.rotateCounterclockwise())
-                    .stream()
+            return Stream.of(towardsTail, towardsTail.rotateClockwise(), towardsTail.rotateCounterclockwise())
                     .filter(direction -> food.contains(head.move(direction)))
                     .findFirst()
                     .orElse(new FindFood().findMove(ctx));
@@ -39,11 +38,6 @@ public class FindTail implements Strategy {
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpaces().filterMoves(ctx, possibleMoves);
-
-        /*
-        final var possibleMovesFilterFood = new ArrayList<Direction>(possibleMoves);
-        new AvoidFood().filterMoves(ctx, possibleMovesFilterFood);
-        */
 
         if (head.manhattanTo(tail) > 1 || !(body.get(body.size() - 2).equals(tail))) {
             System.out.println("Moving to tail");

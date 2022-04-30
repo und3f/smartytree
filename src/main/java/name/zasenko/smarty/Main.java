@@ -1,6 +1,8 @@
 
 package name.zasenko.smarty;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.helidon.common.LogConfig;
 import io.helidon.common.reactive.Single;
 import io.helidon.config.Config;
@@ -43,10 +45,13 @@ public final class Main {
         // By default this will pick up application.yaml from the classpath
         Config config = Config.create();
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
         WebServer server = WebServer.builder(createRouting(config))
                 .config(config.get("server"))
                 .addMediaSupport(JsonpSupport.create())
-                .addMediaSupport(JacksonSupport.create())
+                .addMediaSupport(JacksonSupport.create(objectMapper))
                 .build();
 
         Single<WebServer> webserver = server.start();
