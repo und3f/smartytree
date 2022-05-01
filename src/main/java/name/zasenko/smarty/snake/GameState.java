@@ -65,6 +65,18 @@ public class GameState {
     @Setter
     private List<Snake> snakes;
 
+    Board() {
+    }
+
+    Board(Board proto) {
+      this.height = proto.height;
+      this.width = proto.width;
+
+      this.food = proto.food;
+      this.hazards = proto.hazards;
+      this.snakes = proto.snakes;
+    }
+
     public int valueOfPoint(Point p) {
       return width * p.getY() + p.getX();
     }
@@ -128,3 +140,4 @@ public class GameState {
     }
   }
 }
+

@@ -32,7 +32,7 @@ public class Context {
     boardGraph = new Graph(board);
   }
 
-  public Direction move(Strategy strategy) {
+  public Direction findMove(Strategy strategy) {
     return strategy.findMove(this);
   }
 }

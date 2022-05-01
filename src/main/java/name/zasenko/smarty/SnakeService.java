@@ -83,7 +83,7 @@ public class SnakeService implements Service {
     private void performTurn(GameState gameState, ServerResponse response) {
         LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
 
-        final String move = new Context(gameState).move(strategy).toString();
+        final String move = new Context(gameState).findMove(strategy).toString();
 
         JsonObject returnObject = JSON.createObjectBuilder()
                 .add("move", move)

@@ -7,8 +7,7 @@ import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
-import java.util.List;
-import java.util.ListIterator;
+import java.util.*;
 
 public class FindFood implements Strategy {
     @Override
@@ -26,13 +25,17 @@ public class FindFood implements Strategy {
             return Utils.moveForward(ctx, possibleMoves);
 
         int[] foodDistance = new int[food.size()];
-        for (ListIterator<Point> it = food.listIterator(); it.hasNext();)
-            foodDistance[it.nextIndex()] = head.manhattanTo(it.next());
+        PriorityQueue<Integer> foodIndexPQ = new PriorityQueue<>(food.size(),
+                Comparator.comparingInt(i -> foodDistance[i])
+        );
 
-        int closestFoodIndex = 0;
-        for (int i = closestFoodIndex + 1; i < foodDistance.length; i++)
-            if (foodDistance[closestFoodIndex] > foodDistance[i])
-                closestFoodIndex = i;
+        for (ListIterator<Point> it = food.listIterator(); it.hasNext();) {
+            final int i = it.nextIndex();
+            foodDistance[i] = head.manhattanTo(it.next());
+            foodIndexPQ.add(i);
+        }
+
+        Integer closestFoodIndex = foodIndexPQ.poll();
 
         return Utils.moveTowards(ctx, possibleMoves, food.get(closestFoodIndex));
     }

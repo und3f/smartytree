@@ -28,7 +28,7 @@ public abstract class BaseUnitTestHelper {
   protected Direction RunStrategy(String filename) throws JsonProcessingException, IOException {
     GameState gameState = readState(filename);
 
-    return new Context(gameState).move(StrategyFactory.build(strategy));
+    return new Context(gameState).findMove(StrategyFactory.build(strategy));
   }
 
 }

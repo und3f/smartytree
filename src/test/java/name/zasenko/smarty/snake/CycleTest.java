@@ -14,7 +14,7 @@ public class CycleTest extends BaseUnitTestHelper {
   void MoveDecisionAvoidSelf() throws JsonProcessingException, IOException {
     GameState gameState = readState("avoid-tail-test");
 
-    assertNotEquals(Direction.left, new Context(gameState).move(new Cycle()));
+    assertNotEquals(Direction.left, new Context(gameState).findMove(new Cycle()));
   }
 
 }
