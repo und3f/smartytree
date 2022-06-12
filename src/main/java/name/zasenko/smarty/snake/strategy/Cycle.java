@@ -23,23 +23,36 @@ public class Cycle implements Strategy {
         final var board = ctx.getBoard();
 
         if (me.getLength() == 0)
-            return Direction.right;
+            return Direction.down;
 
         final var possibleMoves = Utils.initDirections(ctx, ctx.getMe());
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpaces().filterMoves(ctx, possibleMoves);
 
+        if (possibleMoves.size() == 1) {
+            return possibleMoves.get(0);
+        }
+
         final var body = ctx.getMe().getBody();
         final Point head = ctx.getMe().getHead();
-        final Point tail = body.get(body.size() - 1);
+        final Point tail = ctx.getMe().tail();
 
         Dijkstra foodDijkstra = new Dijkstra(ctx.getBoardGraph(), head);
         Point closestFood = FindFood.findClosestFood(ctx.getBoard().getFood(), foodDijkstra);
-        int foodReserve = Math.min(4, ((ctx.getMe().getLength() + 1)/2) + 2);
+        int foodReserve = 3;
         if (foodDijkstra.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
             // System.out.println("Move to food");
             return Utils.moveThruPath(ctx, possibleMoves, foodDijkstra.findPath(closestFood));
+        }
+
+        // Do not enter closed without insufficient health
+        final int tailOffset = ctx.getMe().isNextToTail() ? 1 : 0;
+        if (ctx.getBoardGraph().adj(ctx.getMe().tail(tailOffset), 0).size() <= 1) {
+            if (ctx.getMe().getHealth() <= ctx.getMe().getLength()) {
+                // System.out.println("Last chance to eat");
+                return Utils.moveThruPath(ctx, possibleMoves, foodDijkstra.findPath(closestFood));
+            }
         }
 
         // Try to avoid food

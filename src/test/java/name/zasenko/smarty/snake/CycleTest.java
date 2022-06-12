@@ -26,4 +26,18 @@ public class CycleTest extends BaseUnitTestHelper {
     assertEquals(Direction.left, new Context(gameState).findMove(new Cycle()));
   }
 
+  @Test
+  void MoveDecisionFollowTail2() throws IOException {
+    GameState gameState = readState("cycle/follow-tail-empty-test");
+
+    assertEquals(Direction.down, new Context(gameState).findMove(new Cycle()));
+  }
+
+  @Test
+  void TestLastChanceToEat() throws IOException {
+    GameState gameState = readState("cycle/last-chance-eat-test");
+
+    assertEquals(Direction.up, new Context(gameState).findMove(new Cycle()));
+  }
+
 }
