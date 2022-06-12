@@ -55,6 +55,10 @@ public class GameState {
     @Getter
     @Setter
     private int foodSpawnChance;
+
+    @Getter
+    @Setter
+    private int hazardDamagePerTurn;
   }
 
   public static class Board {

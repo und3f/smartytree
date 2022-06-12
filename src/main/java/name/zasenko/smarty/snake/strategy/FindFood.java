@@ -5,6 +5,7 @@ import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.Dijkstra;
+import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.strategy.filter.AvoidProblems;
 
 import java.util.*;
@@ -23,8 +24,9 @@ public class FindFood implements Strategy {
         Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), ctx.getMe().getHead());
 
         Point closestFood = findClosestFood(food, dijkstra);
+        List<DirectedEdge> path = dijkstra.findPath(closestFood);
 
-        return Utils.moveTowards(ctx, possibleMoves, closestFood);
+        return Utils.moveThruPath(ctx, possibleMoves, path);
     }
 
     public static Point findClosestFood(List<Point> food, Dijkstra dijkstra) {

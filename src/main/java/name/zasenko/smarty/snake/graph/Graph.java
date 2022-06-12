@@ -1,5 +1,6 @@
 package name.zasenko.smarty.snake.graph;
 
+import lombok.Getter;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
@@ -15,11 +16,18 @@ public class Graph {
   public static final double WEIGHT = 1.0;
   public static final double HAZARD_WEIGHT = 14.0;
   final GameState.Board board;
-  final Map<Integer, Integer> obstacles;
-  final Map<Integer, Double> hazards;
+
+  final double hazardWeight;
+  private final Map<Integer, Integer> obstacles;
+  protected final Map<Integer, Double> hazards;
 
   public Graph(GameState.Board board) {
+    this(board, HAZARD_WEIGHT);
+  }
+
+  public Graph(GameState.Board board, double hazardWeight) {
     this.board = board;
+    this.hazardWeight = hazardWeight;
     obstacles = new TreeMap<>();
     hazards = new TreeMap<>();
 
@@ -36,7 +44,7 @@ public class Graph {
       }
 
       for (Point p : board.getHazards()) {
-        this.hazards.put(board.valueOfPoint(p), HAZARD_WEIGHT);
+        this.hazards.put(board.valueOfPoint(p), hazardWeight);
       }
     }
   }

@@ -4,8 +4,9 @@ import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 
 public class GraphFoodHazard extends Graph {
-    public GraphFoodHazard(GameState.Board board) {
-        super(board);
+    public GraphFoodHazard(Graph G) {
+        super(G.board, G.hazardWeight);
+
         for (Point p : board.getFood()) {
             hazards.put(board.valueOfPoint(p), HAZARD_WEIGHT);
         }

@@ -56,7 +56,7 @@ public class Cycle implements Strategy {
         }
 
         // Try to avoid food
-        Graph foodHazard = new GraphFoodHazard(ctx.getBoard());
+        Graph foodHazard = new GraphFoodHazard(ctx.getBoardGraph());
         Dijkstra dijkstra = new Dijkstra(foodHazard, head);
 
         if (dijkstra.findDistance(CORNER) != Double.POSITIVE_INFINITY) {

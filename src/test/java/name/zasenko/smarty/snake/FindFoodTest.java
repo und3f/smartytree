@@ -32,9 +32,8 @@ public class FindFoodTest extends BaseUnitTestHelper {
         assertEquals(Direction.left, this.RunStrategy("findfood-closed-test"));
     }
 
-    @Disabled
     @Test
-    void EatNearTail() throws IOException {
-        assertEquals(Direction.down, this.RunStrategy("findfood-cycle-test"));
+    void TestMaze() throws IOException {
+        assertEquals(Direction.up, this.RunStrategy("maze/basic-test"));
     }
 }
