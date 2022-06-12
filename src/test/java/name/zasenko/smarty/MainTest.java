@@ -50,7 +50,7 @@ class MainTest {
                 .path("/")
                 .request(JsonObject.class)
                 .await();
-        assertTrue(response.getString("color").matches("^#[0-9A-F]{6,6}$"));
+        assertTrue(response.getString("color").matches("(?i)^#[0-9A-F]{3,6}$"));
         assertTrue(response.getString("head").matches("^[\\w-]+$"));
         assertTrue(response.getString("tail").matches("^[\\w-]+$"));
     }

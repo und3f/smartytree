@@ -3,9 +3,9 @@ app:
   snake:
     name: Smarty Cloud
     strategy: FindFood
-    color: "#888888"
-    head: default
-    tail: default
+    color: "#3d3172"
+    head: trans-rights-scarf
+    tail: mouse
 
 server:
   port: 8080
