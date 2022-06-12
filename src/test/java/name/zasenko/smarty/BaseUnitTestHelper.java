@@ -1,21 +1,26 @@
-package name.zasenko.smarty.snake;
+package name.zasenko.smarty;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
+import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.Direction;
+import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public abstract class BaseUnitTestHelper {
 
   protected static String strategy;
 
-  protected GameState readState(String filename) throws JsonProcessingException, IOException {
-    final InputStream in = getClass().getClassLoader().getResourceAsStream("json/" + filename + ".json");
+  protected GameState readState(String filename) throws IOException {
+    String resourceFileName = "json/" + filename + ".json";
+    final InputStream in = getResource(resourceFileName);
 
     ObjectMapper objectMapper = new ObjectMapper();
     objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -25,7 +30,15 @@ public abstract class BaseUnitTestHelper {
     return reader.readValue(in);
   }
 
-  protected Direction RunStrategy(String filename) throws JsonProcessingException, IOException {
+  protected InputStream getResource(String resourceFileName) {
+    return getClass().getClassLoader().getResourceAsStream(resourceFileName);
+  }
+
+  protected String getResourceContent(String resourceFileName) throws IOException {
+    return new String(this.getResource(resourceFileName).readAllBytes(), StandardCharsets.UTF_8);
+  }
+
+  protected Direction RunStrategy(String filename) throws IOException {
     GameState gameState = readState(filename);
 
     return new Context(gameState).findMove(StrategyFactory.build(strategy));

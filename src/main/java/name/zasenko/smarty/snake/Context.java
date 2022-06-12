@@ -1,35 +1,31 @@
 package name.zasenko.smarty.snake;
 
 import lombok.Getter;
+import name.zasenko.smarty.snake.graph.Graph;
 import name.zasenko.smarty.snake.strategy.Strategy;
 
-import java.util.List;
-
 public class Context {
-  @Getter
-  private final GameState gameState;
-
   @Getter
   private final GameState.Board board;
 
   @Getter
-  private final Point head, neck;
-
-  @Getter
-  private final List<Point> body;
+  private final GameState.Snake me;
 
   @Getter
   private final Graph boardGraph;
 
+  @Getter
+  private final int turn;
+
   public Context(GameState gameState) {
-    this.gameState = gameState;
-    this.board = gameState.getBoard();
+    this(gameState.getBoard(), gameState.getYou(), gameState.getTurn());
+  }
 
-    head = gameState.getYou().getHead();
-    body = gameState.getYou().getBody();
-    neck = body.get(1);
-
+  public Context(GameState.Board board, GameState.Snake me, int turn) {
+    this.board = board;
+    this.me = me;
     boardGraph = new Graph(board);
+    this.turn = turn;
   }
 
   public Direction findMove(Strategy strategy) {

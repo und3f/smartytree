@@ -1,0 +1,161 @@
+{
+  "game": {
+    "id": "697dd5f2-e318-4877-9185-18ecf1ab3643",
+    "ruleset": {
+      "name": "standard",
+      "version": "?",
+      "settings": {
+        "foodSpawnChance": 15,
+        "minimumFood": 1,
+        "royale": {},
+        "squad": {
+          "allowBodyCollisions": false,
+          "sharedElimination": false,
+          "sharedHealth": false,
+          "sharedLength": false
+        }
+      }
+    },
+    "timeout": 500,
+    "source": "ladder"
+  },
+  "turn": 22,
+  "board": {
+    "width": 11,
+    "height": 11,
+    "food": [
+      {
+        "x": 5,
+        "y": 6
+      },
+      {
+        "x": 6,
+        "y": 0
+      }
+    ],
+    "hazards": [],
+    "snakes": [
+      {
+        "id": "gs_PJyvcYCRDrVqVrYQ8gdHd8pc",
+        "name": "Snake Plissken",
+        "body": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 1,
+            "y": 10
+          },
+          {
+            "x": 1,
+            "y": 9
+          },
+          {
+            "x": 1,
+            "y": 8
+          },
+          {
+            "x": 1,
+            "y": 7
+          }
+        ],
+        "health": 89,
+        "latency": 75,
+        "head": {
+          "x": 2,
+          "y": 10
+        },
+        "length": 5,
+        "shout": "",
+        "squad": ""
+      },
+      {
+        "id": "gs_gGpWgMdk3KYhtfpFDjVtDqv9",
+        "name": "Smarty2",
+        "body": [
+          {
+            "x": 0,
+            "y": 10
+          },
+          {
+            "x": 0,
+            "y": 9
+          },
+          {
+            "x": 0,
+            "y": 8
+          },
+          {
+            "x": 0,
+            "y": 7
+          },
+          {
+            "x": 0,
+            "y": 6
+          },
+          {
+            "x": 0,
+            "y": 5
+          },
+          {
+            "x": 1,
+            "y": 5
+          }
+        ],
+        "health": 97,
+        "latency": 9,
+        "head": {
+          "x": 0,
+          "y": 10
+        },
+        "length": 7,
+        "shout": "",
+        "squad": ""
+      }
+    ]
+  },
+  "you": {
+    "id": "gs_gGpWgMdk3KYhtfpFDjVtDqv9",
+    "name": "Smarty2",
+    "body": [
+      {
+        "x": 0,
+        "y": 10
+      },
+      {
+        "x": 0,
+        "y": 9
+      },
+      {
+        "x": 0,
+        "y": 8
+      },
+      {
+        "x": 0,
+        "y": 7
+      },
+      {
+        "x": 0,
+        "y": 6
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 5
+      }
+    ],
+    "health": 97,
+    "latency": 9,
+    "head": {
+      "x": 0,
+      "y": 10
+    },
+    "length": 7,
+    "shout": "",
+    "squad": ""
+  }
+}

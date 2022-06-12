@@ -22,6 +22,11 @@ public class GameState {
   @Setter
   private Snake you;
 
+  @Override
+  public String toString() {
+    return this.board.toString();
+  }
+
   public static class Game {
     @Getter
     @Setter
@@ -90,6 +95,33 @@ public class GameState {
     public boolean isValid(Point p) {
       return p.getX() >= 0 && p.getX() < width && p.getY() >= 0 && p.getY() < height;
     }
+
+    @Override
+    public String toString() {
+      String [][] board = new String[getHeight()][getWidth()];
+
+      char snakeIndex = 0;
+      for (Snake snake : getSnakes()) {
+        for (Point p : snake.getBody()) {
+          board[p.getY()][p.getX()] = Integer.toString(snakeIndex + 1);
+        }
+
+        Point head = snake.getHead();
+        board[head.getY()][head.getX()] = "H";
+        snakeIndex++;
+      }
+
+      StringBuilder sb = new StringBuilder();
+      for (int y = getWidth()-1; y >= 0; y--) {
+        for (int x = 0; x < getHeight(); x++) {
+          String c = board[y][x];
+          sb.append(c != null ? c : '.');
+        }
+        sb.append("\n");
+      }
+      return sb.toString();
+    }
+
   }
 
   public static class Snake {
@@ -133,11 +165,14 @@ public class GameState {
       return this.body.get(this.body.size() - 1 - offset);
     }
 
-    public boolean isCatchingTail() {
-      final Point nextPosition = this.head().move(this.headDirection());
-
-      return nextPosition.equals(this.tail());
+    public boolean isNextToTail() {
+      return head().manhattanTo(tail()) == 1;
     }
+
+    public boolean isExpanding() {
+      return tail(1).equals(tail());
+    }
+
   }
 }
 

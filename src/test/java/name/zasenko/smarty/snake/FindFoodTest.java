@@ -1,6 +1,6 @@
 package name.zasenko.smarty.snake;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+import name.zasenko.smarty.BaseUnitTestHelper;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;

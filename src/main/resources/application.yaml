@@ -2,7 +2,7 @@
 app:
   snake:
     name: Smarty Cloud
-    strategy: FindFood
+    strategy: Cycle
     color: "#888888"
     head: default
     tail: default

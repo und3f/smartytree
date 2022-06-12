@@ -15,12 +15,12 @@ public class FindTail implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         Direction towardsTail = moveToTail(ctx);
-        if (ctx.getGameState().getYou().getHealth() >= MinHealth)
+        if (ctx.getMe().getHealth() >= MinHealth)
             return towardsTail;
         else {
             // Move towards food
             final var food = ctx.getBoard().getFood();
-            final var head = ctx.getHead();
+            final var head = ctx.getMe().getHead();
 
             return Stream.of(towardsTail, towardsTail.rotateClockwise(), towardsTail.rotateCounterclockwise())
                     .filter(direction -> food.contains(head.move(direction)))
@@ -30,9 +30,9 @@ public class FindTail implements Strategy {
     }
 
     private Direction moveToTail(Context ctx) {
-        final var head = ctx.getHead();
-        var possibleMoves = Utils.initDirections(ctx);
-        final var body = ctx.getBody();
+        final var head = ctx.getMe().getHead();
+        var possibleMoves = Utils.initDirections(ctx, ctx.getMe());
+        final var body = ctx.getMe().getBody();
         final Point tail = body.get(body.size() - 1);
 
         new AvoidBorders().filterMoves(ctx, possibleMoves);

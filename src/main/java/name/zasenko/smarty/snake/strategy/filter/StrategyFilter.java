@@ -6,5 +6,5 @@ import name.zasenko.smarty.snake.Direction;
 import java.util.List;
 
 public interface StrategyFilter {
-    public void filterMoves(Context ctx, List<Direction> possibleMoves);
+    void filterMoves(Context ctx, List<Direction> possibleMoves);
 }

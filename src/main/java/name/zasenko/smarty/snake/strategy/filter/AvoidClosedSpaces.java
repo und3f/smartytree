@@ -3,7 +3,8 @@ package name.zasenko.smarty.snake.strategy.filter;
 
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.Graph;
+import name.zasenko.smarty.snake.graph.CC;
+import name.zasenko.smarty.snake.graph.DirectedEdge;
 
 import java.util.*;
 
@@ -11,23 +12,23 @@ public class AvoidClosedSpaces implements StrategyFilter {
 
     @Override
     public void filterMoves(Context ctx, List<Direction> possibleMoves) {
-        final var head = ctx.getHead();
-        final var body = ctx.getBody();
+        final var head = ctx.getMe().getHead();
+        final var body = ctx.getMe().getBody();
         final var tail = body.get(body.size() - 1);
         final var board = ctx.getBoard();
         final var boardGraph = ctx.getBoardGraph();
 
-        if (possibleMoves.size() <= 1) {
+        if (possibleMoves.size() <= 0) {
             return;
         }
 
-        Graph.CC cc = boardGraph.new CC();
+        CC cc = new CC(boardGraph);
         Integer[] areaSizes = new Integer[possibleMoves.size()];
 
         Set<Integer> expandingClusters = new TreeSet<Integer>();
         expandingClusters.add(cc.id(board.valueOfPoint(tail)));
-        for (Integer p : boardGraph.pointsAround(tail, 1)) {
-            expandingClusters.add(cc.id(p));
+        for (DirectedEdge edge : boardGraph.pointsAround(tail, 1)) {
+            expandingClusters.add(cc.id(edge.getDestination()));
         }
 
         for (int i = 0; i < possibleMoves.size(); i++) {

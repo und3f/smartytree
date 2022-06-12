@@ -1,5 +1,6 @@
 package name.zasenko.smarty.snake;
 
+import name.zasenko.smarty.BaseUnitTestHelper;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class GameStateTest extends BaseUnitTestHelper {
     GameState.Board sampleBoard = sampleState.getBoard();
     GameState.Board cloneBoard = new GameState.Board(sampleBoard);
 
-    assertNotEquals(sampleBoard, cloneBoard);
+    assertNotSame(sampleBoard, cloneBoard);
     assertEquals(sampleBoard.getWidth(), cloneBoard.getWidth());
     assertEquals(sampleBoard.getHeight(), cloneBoard.getHeight());
     assertEquals(sampleBoard.getFood(), cloneBoard.getFood());

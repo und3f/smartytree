@@ -1,6 +1,7 @@
 package name.zasenko.smarty.snake;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import name.zasenko.smarty.BaseUnitTestHelper;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ public class FindTailTest extends BaseUnitTestHelper {
   }
 
   @Test
-  void MoveDecisionToTail3Test() throws JsonProcessingException, IOException {
+  void MoveDecisionToTail3Test() throws IOException {
     assertEquals(Direction.left, this.RunStrategy("avoid-tail-test2"));
   }
 

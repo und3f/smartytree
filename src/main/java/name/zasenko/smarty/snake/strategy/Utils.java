@@ -2,17 +2,17 @@ package name.zasenko.smarty.snake.strategy;
 
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
+import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.graph.DirectedEdge;
+import name.zasenko.smarty.snake.strategy.filter.AvoidProblems;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static List<Direction> initDirections(Context context) {
-        Direction forwardDirection = Direction.up;
-        Direction[] forwardDirections = context.getNeck().directionTo(context.getHead());
-        if (forwardDirections.length > 0)
-            forwardDirection = forwardDirections[0];
+    public static List<Direction> initDirections(Context context, GameState.Snake snake) {
+        Direction forwardDirection = snake.headDirection();
 
         return new ArrayList<>(Arrays.asList(
                 forwardDirection,
@@ -20,9 +20,16 @@ public class Utils {
                 forwardDirection.rotateCounterclockwise()));
     }
 
+    public static List<Direction> initPossibleDirections(Context context, GameState.Snake snake) {
+        List<Direction> directions = initDirections(context, snake);
+        new AvoidProblems().filterMoves(context, directions);
+
+        return directions;
+    }
+
     public static Direction moveForward(Context context, List<Direction> possibleMoves) {
         if (possibleMoves.size() == 0)
-            return context.getNeck().directionTo(context.getHead())[0];
+            return context.getMe().headDirection();
 
         return possibleMoves.get(0);
     }
@@ -31,7 +38,7 @@ public class Utils {
         if (possibleMoves.size() == 1)
             return moveForward(context, possibleMoves);
 
-        Set<Direction> possibleMovesToTarget = Arrays.stream(context.getHead().directionTo(target))
+        Set<Direction> possibleMovesToTarget = Arrays.stream(context.getMe().getHead().directionTo(target))
                 .distinct()
                 .filter(possibleMoves::contains)
                 .collect(Collectors.toSet());
@@ -42,6 +49,16 @@ public class Utils {
 
         return moveForward(context, possibleMoves);
     }
+
+    public static Direction moveThruPath(Context context, List<Direction> possibleMoves, List<DirectedEdge> path) {
+        if (path == null) {
+            return moveForward(context, possibleMoves);
+        }
+
+        Point nextPoint = context.getBoard().fromValue(path.get(0).getDestination());
+        return moveTowards(context, possibleMoves, nextPoint);
+    }
+
 
     public static Direction randomMove(List<Direction> possibleMoves) {
         final int choice = new Random().nextInt(possibleMoves.size());
