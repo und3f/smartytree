@@ -30,7 +30,7 @@ public class AvoidObstacles implements StrategyFilter {
             if (snake.equals(me))
                 continue;
 
-            if (snake.getLength() >= me.getLength()) {
+            if (snake.getLength() > me.getLength()) {
                 Point enemyHead = snake.getBody().get(0);
                 obstacles.add(enemyHead);
 

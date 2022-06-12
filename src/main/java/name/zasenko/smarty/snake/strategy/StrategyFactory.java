@@ -4,6 +4,7 @@ public class StrategyFactory {
     public final static String StrategyFindFood = "FindFood";
     public final static String StrategyFindTail = "FindTail";
     public final static String StrategyCycle = "Cycle";
+    public final static String StrategyConstrictor = "Constrictor";
 
     public static Strategy build(String strategy) {
         switch (strategy) {
@@ -13,6 +14,8 @@ public class StrategyFactory {
                 return new FindTail();
             case StrategyCycle:
                 return new Cycle();
+            case StrategyConstrictor:
+                return new Constrictor();
             default:
                 throw new RuntimeException("Unknown strategy " + strategy);
         }

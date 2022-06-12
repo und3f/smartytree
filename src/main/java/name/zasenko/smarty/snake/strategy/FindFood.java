@@ -13,7 +13,6 @@ public class FindFood implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         final var board = ctx.getBoard();
-        final var head = ctx.getMe().getHead();
 
         final var possibleMoves = Utils.initPossibleDirections(ctx, ctx.getMe());
         List<Point> food = board.getFood();

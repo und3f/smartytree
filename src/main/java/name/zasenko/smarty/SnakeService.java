@@ -8,6 +8,7 @@ import io.helidon.webserver.ServerResponse;
 import io.helidon.webserver.Service;
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.strategy.Constrictor;
 import name.zasenko.smarty.snake.strategy.Strategy;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 
@@ -30,7 +31,7 @@ public class SnakeService implements Service {
     private final String color;
     private final String head;
     private final String tail;
-    private final Strategy strategy;
+    private final Strategy defaultStrategy;
 
     SnakeService(Config config) {
         this.name = config.get(CONFIG_PREFIX + "name").asString().orElse("Unnamed");
@@ -40,7 +41,7 @@ public class SnakeService implements Service {
 
         final String strategyName = config.get(CONFIG_PREFIX + "strategy").asString().orElse(StrategyFactory.StrategyFindFood);
         LOGGER.log(Level.INFO, "Building strategy {0}", strategyName);
-        this.strategy = StrategyFactory.build(strategyName);
+        this.defaultStrategy = StrategyFactory.build(strategyName);
     }
 
     @Override
@@ -81,7 +82,13 @@ public class SnakeService implements Service {
     }
 
     private void performTurn(GameState gameState, ServerResponse response) {
+        var strategy = defaultStrategy;
+        if (gameState.getGame().getRuleset().getName().equals("constrictor")) {
+            strategy = new Constrictor();
+        }
+
         LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
+        LOGGER.log(Level.INFO, "Strategy #{0}", strategy.toString());
 
         final String move = new Context(gameState).findMove(strategy).toString();
 
