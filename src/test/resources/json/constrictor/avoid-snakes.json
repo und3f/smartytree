@@ -1,0 +1,398 @@
+{
+  "game": {
+    "id": "aebde2b0-6bef-4b02-8ab5-a736e3a3be27",
+    "ruleset": {
+      "name": "constrictor",
+      "version": "?",
+      "settings": {
+        "royale": {},
+        "squad": {
+          "allowBodyCollisions": false,
+          "sharedElimination": false,
+          "sharedHealth": false,
+          "sharedLength": false
+        }
+      }
+    },
+    "map": "empty",
+    "timeout": 500,
+    "source": "ladder"
+  },
+  "turn": 16,
+  "board": {
+    "width": 11,
+    "height": 11,
+    "food": [],
+    "hazards": [],
+    "snakes": [
+      {
+        "id": "gs_brrVj63whvKbdgH7hwPkDB8X",
+        "name": "SmartyTree",
+        "health": 100,
+        "body": [
+          {
+            "x": 2,
+            "y": 10
+          },
+          {
+            "x": 1,
+            "y": 10
+          },
+          {
+            "x": 0,
+            "y": 10
+          },
+          {
+            "x": 0,
+            "y": 9
+          },
+          {
+            "x": 0,
+            "y": 8
+          },
+          {
+            "x": 0,
+            "y": 7
+          },
+          {
+            "x": 0,
+            "y": 6
+          },
+          {
+            "x": 0,
+            "y": 5
+          },
+          {
+            "x": 1,
+            "y": 5
+          },
+          {
+            "x": 2,
+            "y": 5
+          },
+          {
+            "x": 3,
+            "y": 5
+          },
+          {
+            "x": 4,
+            "y": 5
+          },
+          {
+            "x": 5,
+            "y": 5
+          },
+          {
+            "x": 6,
+            "y": 5
+          },
+          {
+            "x": 7,
+            "y": 5
+          },
+          {
+            "x": 8,
+            "y": 5
+          },
+          {
+            "x": 9,
+            "y": 5
+          },
+          {
+            "x": 9,
+            "y": 5
+          }
+        ],
+        "latency": 2,
+        "head": {
+          "x": 2,
+          "y": 10
+        },
+        "length": 18,
+        "shout": "",
+        "squad": "",
+        "customizations": {
+          "color": "#3d3172",
+          "head": "trans-rights-scarf",
+          "tail": "mouse"
+        }
+      },
+      {
+        "id": "gs_vb7jd8yxT7BX6XvbPPgWWttc",
+        "name": "Muncher45",
+        "health": 100,
+        "body": [
+          {
+            "x": 10,
+            "y": 10
+          },
+          {
+            "x": 10,
+            "y": 9
+          },
+          {
+            "x": 10,
+            "y": 8
+          },
+          {
+            "x": 10,
+            "y": 7
+          },
+          {
+            "x": 10,
+            "y": 6
+          },
+          {
+            "x": 10,
+            "y": 5
+          },
+          {
+            "x": 10,
+            "y": 4
+          },
+          {
+            "x": 10,
+            "y": 3
+          },
+          {
+            "x": 10,
+            "y": 2
+          },
+          {
+            "x": 10,
+            "y": 1
+          },
+          {
+            "x": 9,
+            "y": 1
+          },
+          {
+            "x": 8,
+            "y": 1
+          },
+          {
+            "x": 7,
+            "y": 1
+          },
+          {
+            "x": 7,
+            "y": 0
+          },
+          {
+            "x": 6,
+            "y": 0
+          },
+          {
+            "x": 6,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          },
+          {
+            "x": 5,
+            "y": 1
+          }
+        ],
+        "latency": 75,
+        "head": {
+          "x": 10,
+          "y": 10
+        },
+        "length": 18,
+        "shout": "",
+        "squad": "",
+        "customizations": {
+          "color": "#000000",
+          "head": "smart-caterpillar",
+          "tail": "curled"
+        }
+      },
+      {
+        "id": "gs_8CBSb764FCY9mw3Jh7gKjD94",
+        "name": "Safe Walker",
+        "health": 100,
+        "body": [
+          {
+            "x": 4,
+            "y": 10
+          },
+          {
+            "x": 5,
+            "y": 10
+          },
+          {
+            "x": 6,
+            "y": 10
+          },
+          {
+            "x": 7,
+            "y": 10
+          },
+          {
+            "x": 7,
+            "y": 9
+          },
+          {
+            "x": 8,
+            "y": 9
+          },
+          {
+            "x": 9,
+            "y": 9
+          },
+          {
+            "x": 9,
+            "y": 8
+          },
+          {
+            "x": 8,
+            "y": 8
+          },
+          {
+            "x": 7,
+            "y": 8
+          },
+          {
+            "x": 6,
+            "y": 8
+          },
+          {
+            "x": 6,
+            "y": 7
+          },
+          {
+            "x": 5,
+            "y": 7
+          },
+          {
+            "x": 4,
+            "y": 7
+          },
+          {
+            "x": 4,
+            "y": 8
+          },
+          {
+            "x": 4,
+            "y": 9
+          },
+          {
+            "x": 5,
+            "y": 9
+          },
+          {
+            "x": 5,
+            "y": 9
+          }
+        ],
+        "latency": 1,
+        "head": {
+          "x": 4,
+          "y": 10
+        },
+        "length": 18,
+        "shout": "",
+        "squad": "",
+        "customizations": {
+          "color": "#008800",
+          "head": "default",
+          "tail": "default"
+        }
+      }
+    ]
+  },
+  "you": {
+    "id": "gs_brrVj63whvKbdgH7hwPkDB8X",
+    "name": "SmartyTree",
+    "health": 100,
+    "body": [
+      {
+        "x": 2,
+        "y": 10
+      },
+      {
+        "x": 1,
+        "y": 10
+      },
+      {
+        "x": 0,
+        "y": 10
+      },
+      {
+        "x": 0,
+        "y": 9
+      },
+      {
+        "x": 0,
+        "y": 8
+      },
+      {
+        "x": 0,
+        "y": 7
+      },
+      {
+        "x": 0,
+        "y": 6
+      },
+      {
+        "x": 0,
+        "y": 5
+      },
+      {
+        "x": 1,
+        "y": 5
+      },
+      {
+        "x": 2,
+        "y": 5
+      },
+      {
+        "x": 3,
+        "y": 5
+      },
+      {
+        "x": 4,
+        "y": 5
+      },
+      {
+        "x": 5,
+        "y": 5
+      },
+      {
+        "x": 6,
+        "y": 5
+      },
+      {
+        "x": 7,
+        "y": 5
+      },
+      {
+        "x": 8,
+        "y": 5
+      },
+      {
+        "x": 9,
+        "y": 5
+      },
+      {
+        "x": 9,
+        "y": 5
+      }
+    ],
+    "latency": 2,
+    "head": {
+      "x": 2,
+      "y": 10
+    },
+    "length": 18,
+    "shout": "",
+    "squad": "",
+    "customizations": {
+      "color": "#3d3172",
+      "head": "trans-rights-scarf",
+      "tail": "mouse"
+    }
+  }
+}

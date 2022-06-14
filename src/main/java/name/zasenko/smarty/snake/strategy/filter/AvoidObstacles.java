@@ -30,20 +30,22 @@ public class AvoidObstacles implements StrategyFilter {
             if (snake.equals(me))
                 continue;
 
-            if (snake.getLength() > me.getLength()) {
+            if (snake.getLength() >= me.getLength()) {
                 Point enemyHead = snake.getBody().get(0);
                 obstacles.add(enemyHead);
 
-                Direction[] directions = snake.getBody().get(1).directionTo(enemyHead);
-                Direction enemyForwardDirection = Direction.up;
-                if (directions.length > 0)
-                    enemyForwardDirection = directions[0];
+                if (snake.getLength() > me.getLength()) {
+                    Direction[] directions = snake.getBody().get(1).directionTo(enemyHead);
+                    Direction enemyForwardDirection = Direction.up;
+                    if (directions.length > 0)
+                        enemyForwardDirection = directions[0];
 
-                for (Direction direction : Arrays.asList(
-                        enemyForwardDirection,
-                        enemyForwardDirection.rotateClockwise(),
-                        enemyForwardDirection.rotateCounterclockwise()))
-                    possibleObstacles.add(enemyHead.move(direction));
+                    for (Direction direction : Arrays.asList(
+                            enemyForwardDirection,
+                            enemyForwardDirection.rotateClockwise(),
+                            enemyForwardDirection.rotateCounterclockwise()))
+                        possibleObstacles.add(enemyHead.move(direction));
+                }
             }
 
             obstacles.addAll(snake.getBody().subList(1, snake.getBody().size() - 1));
