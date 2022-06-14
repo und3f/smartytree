@@ -19,11 +19,12 @@ public class FindTail implements Strategy {
             return towardsTail;
         else {
             // Move towards food
-            final var food = ctx.getBoard().getFood();
+            final var board = ctx.getBoard();
+            final var food = board.getFood();
             final var head = ctx.getMe().getHead();
 
             return Stream.of(towardsTail, towardsTail.rotateClockwise(), towardsTail.rotateCounterclockwise())
-                    .filter(direction -> food.contains(head.move(direction)))
+                    .filter(direction -> food.contains(board.movePoint(head, direction)))
                     .findFirst()
                     .orElse(new FindFood().findMove(ctx));
         }

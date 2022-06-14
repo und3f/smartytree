@@ -59,4 +59,19 @@ public enum Direction {
   };
 
   private static final String[] directionToString = { "up", "down", "left", "right" };
+
+  public Direction invert() {
+    switch (this) {
+      case down:
+        return Direction.up;
+      case up:
+        return Direction.down;
+      case left:
+        return Direction.right;
+      case right:
+        return Direction.left;
+    }
+
+    throw new RuntimeException("Unexpected direction");
+  }
 }

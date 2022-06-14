@@ -36,4 +36,10 @@ public class FindFoodTest extends BaseUnitTestHelper {
     void TestMaze() throws IOException {
         assertEquals(Direction.up, this.RunStrategy("maze/basic-test"));
     }
+
+    @Test
+    void TestMaze2() throws IOException {
+        assertEquals(Direction.right, this.RunStrategy("maze/unexpected-move"));
+    }
+
 }

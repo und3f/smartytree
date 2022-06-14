@@ -15,13 +15,13 @@ public class AvoidClosedSpaces implements StrategyFilter {
 
     @Override
     public void filterMoves(Context ctx, List<Direction> possibleMoves) {
+        if (possibleMoves.size() <= 1) {
+            return;
+        }
+
         final var head = ctx.getMe().getHead();
         final var board = ctx.getBoard();
         final var boardGraph = ctx.getBoardGraph();
-
-        if (possibleMoves.size() <= 0) {
-            return;
-        }
 
         CC cc = new CC(boardGraph);
         Integer[] areaSizes = new Integer[possibleMoves.size()];
@@ -29,7 +29,7 @@ public class AvoidClosedSpaces implements StrategyFilter {
         Set<Integer> expandingClusters = getExpandingClusters(ctx, cc);
 
         for (int i = 0; i < possibleMoves.size(); i++) {
-            int moveDst = board.valueOfPoint(head.move(possibleMoves.get(i)));
+            int moveDst = board.valueOfPoint(board.movePoint(head, possibleMoves.get(i)));
             areaSizes[i] = cc.componentSize(moveDst);
             if (expandingClusters.contains(cc.id(moveDst)))
                 areaSizes[i] = Integer.MAX_VALUE;

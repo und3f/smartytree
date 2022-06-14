@@ -2,6 +2,7 @@ package name.zasenko.smarty.snake.graph;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import name.zasenko.smarty.BaseUnitTestHelper;
+import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
@@ -57,7 +58,7 @@ public class GraphTest extends BaseUnitTestHelper {
         List<DirectedEdge> adjanced = graph.adj(gameState.getYou().getHead(), 0);
         assertEquals(2, adjanced.size());
 
-        adjanced = graph.adj(gameState.getYou().getHead().move(Direction.up), 1);
+        adjanced = graph.adj(board.movePoint(gameState.getYou().getHead(), Direction.up), 1);
         assertEquals(2, adjanced.size());
 
         int v44 = board.valueOfPoint(new Point(4, 4));
@@ -84,8 +85,8 @@ public class GraphTest extends BaseUnitTestHelper {
 
         final Point head = gameState.getYou().getHead();
 
-        final int headRight = board.valueOfPoint(head.move(Direction.right));
-        final int headLeft = board.valueOfPoint(head.move(Direction.left));
+        final int headRight = board.valueOfPoint(board.movePoint(head, Direction.right));
+        final int headLeft = board.valueOfPoint(board.movePoint(head, Direction.left));
 
         CC cc = new CC(graph);
 

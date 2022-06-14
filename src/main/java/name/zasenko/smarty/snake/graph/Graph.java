@@ -72,7 +72,7 @@ public class Graph {
     int startPointV = board.valueOfPoint(startPoint);
 
     return Stream.of(Direction.values())
-        .map(startPoint::move)
+        .map(direction -> board.movePoint(startPoint, direction))
         .filter(board::isValid)
         .map(board::valueOfPoint)
         .filter(p -> !obstacles.containsKey(p) || obstacles.get(p) < time)

@@ -16,15 +16,6 @@ public class Point implements Comparable<Point> {
     this.y = y;
   }
 
-  public Point move(Point p2) {
-    return new Point(y + p2.y, x + p2.x);
-  }
-
-  public Point move(Direction direction) {
-    Point p2 = direction.offset();
-    return new Point(y + p2.y, x + p2.x);
-  }
-
   public int manhattanTo(Point to) {
     return Math.abs(x - to.x) + Math.abs(y - to.y);
   }

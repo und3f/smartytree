@@ -15,7 +15,7 @@ public class AvoidFood implements StrategyFilter {
         for (int i = 0; possibleMoves.size() > 1 && i < possibleMoves.size(); i++) {
             Direction direction = possibleMoves.get(i);
 
-            if (food.contains(ctx.getMe().getHead().move(direction))) {
+            if (food.contains(ctx.getBoard().movePoint(ctx.getMe().getHead(), direction))) {
                 possibleMoves.remove(i);
                 i--;
             }

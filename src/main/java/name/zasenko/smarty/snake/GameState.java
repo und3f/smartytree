@@ -49,6 +49,12 @@ public class GameState {
     @Getter
     @Setter
     private GameSettings settings;
+
+    public static final String STANDARD = "standard";
+    public static final String ROYALE = "royale";
+    public static final String SQUAD = "squad";
+    public static final String CONSTRICTOR = "constrictor";
+    public static final String WRAPPED = "wrapped";
   }
 
   public static class GameSettings {
@@ -74,7 +80,12 @@ public class GameState {
     @Setter
     private List<Snake> snakes;
 
+    @Getter
+    @Setter
+    private PointMoveStrategy moveStrategy;
+    
     Board() {
+      moveStrategy = new BorderedMoveStrategy();
     }
 
     Board(Board proto) {
@@ -84,6 +95,7 @@ public class GameState {
       this.food = proto.food;
       this.hazards = proto.hazards;
       this.snakes = proto.snakes;
+      this.moveStrategy = proto.moveStrategy;
     }
 
     public int valueOfPoint(Point p) {
@@ -97,7 +109,17 @@ public class GameState {
     }
 
     public boolean isValid(Point p) {
+      if (p == null)
+        return false;
       return p.getX() >= 0 && p.getX() < width && p.getY() >= 0 && p.getY() < height;
+    }
+
+    public Point movePoint(Point s, Point vector) {
+      return moveStrategy.move(s, vector);
+    }
+
+    public Point movePoint(Point s, Direction direction) {
+      return movePoint(s, direction.offset());
     }
 
     @Override
@@ -126,6 +148,27 @@ public class GameState {
       return sb.toString();
     }
 
+    public interface PointMoveStrategy {
+      Point move(Point source, Point vector);
+    }
+
+    public class BorderedMoveStrategy implements PointMoveStrategy {
+      @Override
+      public Point move(Point s, Point vector) {
+        Point point = new Point(s.getY() + vector.getY(), s.getX() + vector.getX());
+
+        if (!isValid(point))
+          return null;
+        return point;
+      }
+    }
+
+    public class WrapMoveStrategy implements PointMoveStrategy {
+      @Override
+      public Point move(Point s, Point vector) {
+        return new Point((s.getY() + vector.getY() + height) % height, (s.getX() + vector.getX() + width) % width);
+      }
+    }
   }
 
   public static class Snake {
@@ -154,11 +197,16 @@ public class GameState {
     }
 
     public Direction headDirection() {
-      Direction[] directions = this.body.get(1).directionTo(this.head());
+      Point neck = this.body.get(1);
+      Direction[] directions = neck.directionTo(this.head());
       if (directions.length < 1)
         return Direction.up;
 
-      return directions[0];
+      Direction direction = directions[0];
+      if (neck.manhattanTo(this.head) > 1) {
+        direction = direction.invert();
+      }
+      return direction;
     }
 
     public Point tail() {

@@ -83,12 +83,12 @@ public class SnakeService implements Service {
 
     private void performTurn(GameState gameState, ServerResponse response) {
         var strategy = defaultStrategy;
-        if (gameState.getGame().getRuleset().getName().equals("constrictor")) {
+        if (gameState.getGame().getRuleset().getName().equals(GameState.Ruleset.CONSTRICTOR)) {
             strategy = new Constrictor();
         }
 
         LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
-        LOGGER.log(Level.INFO, "Strategy #{0}", strategy.toString());
+        // LOGGER.log(Level.INFO, "Strategy #{0}", strategy.toString());
 
         final String move = new Context(gameState).findMove(strategy).toString();
 
