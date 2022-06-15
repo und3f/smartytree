@@ -4,6 +4,7 @@ import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.strategy.filter.AvoidProblems;
 
@@ -65,4 +66,19 @@ public class Utils {
         return possibleMoves.get(choice);
     }
 
+    public static Point findClosestPoint(List<Point> points, Dijkstra dijkstra) {
+        double[] distances = new double[points.size()];
+        PriorityQueue<Integer> distancePQ = new PriorityQueue<>(points.size(),
+                Comparator.comparingDouble(i -> distances[i])
+        );
+
+        for (ListIterator<Point> it = points.listIterator(); it.hasNext();) {
+            final int i = it.nextIndex();
+            distances[i] = dijkstra.findDistance(it.next());
+            distancePQ.add(i);
+        }
+
+        Integer closestPointIndex = distancePQ.poll();
+        return points.get(closestPointIndex);
+    }
 }

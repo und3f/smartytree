@@ -39,7 +39,7 @@ public class Cycle implements Strategy {
         final Point tail = ctx.getMe().tail();
 
         Dijkstra foodDijkstra = new Dijkstra(ctx.getBoardGraph(), head);
-        Point closestFood = FindFood.findClosestFood(ctx.getBoard().getFood(), foodDijkstra);
+        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), foodDijkstra);
         int foodReserve = 3;
         if (foodDijkstra.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
             // System.out.println("Move to food");

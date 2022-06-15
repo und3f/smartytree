@@ -3,7 +3,6 @@ package name.zasenko.smarty.snake;
 import name.zasenko.smarty.BaseUnitTestHelper;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

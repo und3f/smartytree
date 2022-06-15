@@ -30,7 +30,7 @@ public class AvoidObstacles implements StrategyFilter {
             if (snake.equals(me))
                 continue;
 
-            if (snake.getLength() > me.getLength()) {
+            if (snake.getLength() >= me.getLength()) {
                 Point enemyHead = snake.getBody().get(0);
                 obstacles.add(enemyHead);
 
@@ -42,8 +42,12 @@ public class AvoidObstacles implements StrategyFilter {
                 for (Direction direction : Arrays.asList(
                         enemyForwardDirection,
                         enemyForwardDirection.rotateClockwise(),
-                        enemyForwardDirection.rotateCounterclockwise()))
-                    possibleObstacles.add(board.movePoint(enemyHead, direction));
+                        enemyForwardDirection.rotateCounterclockwise())) {
+
+                    Point possiblePosition = board.movePoint(enemyHead, direction);
+                    if (possiblePosition != null)
+                        possibleObstacles.add(possiblePosition);
+                }
             }
 
             obstacles.addAll(snake.getBody().subList(1, snake.getBody().size() - 1));

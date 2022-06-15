@@ -6,43 +6,46 @@ import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
-import name.zasenko.smarty.snake.strategy.filter.AvoidProblems;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FindFood implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         final var board = ctx.getBoard();
 
-        final var possibleMoves = Utils.initPossibleDirections(ctx, ctx.getMe());
-        List<Point> food = board.getFood();
+        GameState.Snake me = ctx.getMe();
+        final var possibleMoves = Utils.initPossibleDirections(ctx, me);
 
-        if (possibleMoves.size() == 1 || food.size() < 1)
+        Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), me.getHead());
+
+        if (possibleMoves.size() == 1) {
             return Utils.moveForward(ctx, possibleMoves);
+        }
 
-        Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), ctx.getMe().getHead());
+        List<Point> targets = new ArrayList<Point>(board.getFood());
 
-        Point closestFood = findClosestFood(food, dijkstra);
-        List<DirectedEdge> path = dijkstra.findPath(closestFood);
+        targets.addAll(ctx.getBoard().getSnakes()
+                .stream().filter(snake -> snake.getLength() < me.getLength())
+                .map(GameState.Snake::head)
+                .collect(Collectors.toList())
+        );
+
+        Point closestTarget = Utils.findClosestPoint(targets, dijkstra);
+
+        List<DirectedEdge> path = dijkstra.findPath(closestTarget);
+        if (path == null) {
+            path = dijkstra.findPath(me.tail());
+        }
+
+        if (path == null) {
+            targets = possibleMoves.stream().map(direction -> board.movePoint(me.head(), direction)).collect(Collectors.toList());
+            closestTarget = Utils.findClosestPoint(targets, dijkstra);
+            path = dijkstra.findPath(closestTarget);
+        }
 
         return Utils.moveThruPath(ctx, possibleMoves, path);
     }
 
-    public static Point findClosestFood(List<Point> food, Dijkstra dijkstra) {
-        double[] foodDistance = new double[food.size()];
-        PriorityQueue<Integer> foodIndexPQ = new PriorityQueue<>(food.size(),
-                Comparator.comparingDouble(i -> foodDistance[i])
-        );
-
-        for (ListIterator<Point> it = food.listIterator(); it.hasNext();) {
-            final int i = it.nextIndex();
-            foodDistance[i] = dijkstra.findDistance(it.next());
-            foodIndexPQ.add(i);
-        }
-
-        Integer closestFoodIndex = foodIndexPQ.poll();
-        Point closestFood = food.get(closestFoodIndex);
-        return closestFood;
-    }
 }
