@@ -40,7 +40,10 @@ public class FindFood implements Strategy {
         }
 
         if (path == null) {
-            targets = possibleMoves.stream().map(direction -> board.movePoint(me.head(), direction)).collect(Collectors.toList());
+            targets = possibleMoves.stream()
+                    .map(direction -> board.movePoint(me.head(), direction))
+                    .filter(Objects::nonNull)
+                    .collect(Collectors.toList());
             closestTarget = Utils.findClosestPoint(targets, dijkstra);
             path = dijkstra.findPath(closestTarget);
         }
