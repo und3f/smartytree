@@ -43,10 +43,12 @@ public class AvoidClosedSpaces implements StrategyFilter {
 
     protected Set<Integer> getExpandingClusters(Context ctx, CC cc) {
         Set<Integer> expandingClusters = new TreeSet<Integer>();
-        Point tail = ctx.getMe().tail();
-        expandingClusters.add(cc.id(ctx.getBoard().valueOfPoint(tail)));
-        for (DirectedEdge edge : ctx.getBoardGraph().pointsAround(tail, 1)) {
-            expandingClusters.add(cc.id(edge.getDestination()));
+        for (GameState.Snake snake : ctx.getBoard().getSnakes()) {
+            Point tail = snake.tail();
+            expandingClusters.add(cc.id(ctx.getBoard().valueOfPoint(tail)));
+            for (DirectedEdge edge : ctx.getBoardGraph().pointsAround(tail, 1)) {
+                expandingClusters.add(cc.id(edge.getDestination()));
+            }
         }
         return expandingClusters;
     }
