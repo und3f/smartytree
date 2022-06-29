@@ -51,6 +51,9 @@ public class Dijkstra {
     }
 
     public List<DirectedEdge> findPath(Point p) {
+        if (p == null)
+            return null;
+
         return findPath(G.board.valueOfPoint(p));
     }
 

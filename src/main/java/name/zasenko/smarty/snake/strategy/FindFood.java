@@ -35,11 +35,12 @@ public class FindFood implements Strategy {
         Point closestTarget = Utils.findClosestPoint(targets, dijkstra);
 
         List<DirectedEdge> path = dijkstra.findPath(closestTarget);
-        if (path == null) {
-            path = dijkstra.findPath(me.tail());
+        if (path == null || dijkstra.findDistance(closestTarget) > me.getHealth()) {
+            closestTarget = me.tail();
+            path = dijkstra.findPath(closestTarget);
         }
 
-        if (path == null) {
+        if (path == null || dijkstra.findDistance(closestTarget) > me.getHealth()) {
             targets = possibleMoves.stream()
                     .map(direction -> board.movePoint(me.head(), direction))
                     .filter(Objects::nonNull)

@@ -67,6 +67,9 @@ public class Utils {
     }
 
     public static Point findClosestPoint(List<Point> points, Dijkstra dijkstra) {
+        if (points.size() == 0)
+            return null;
+
         double[] distances = new double[points.size()];
         PriorityQueue<Integer> distancePQ = new PriorityQueue<>(points.size(),
                 Comparator.comparingDouble(i -> distances[i])
