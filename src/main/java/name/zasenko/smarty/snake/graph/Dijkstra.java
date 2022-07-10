@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Dijkstra {
     private final Graph G;
-    private double[] distTo;
-    private DirectedEdge[] edgeTo;
-    private IndexMinPQ<Double> pq;
+    private final double[] distTo;
+    private final DirectedEdge[] edgeTo;
+    private final IndexMinPQ<Double> pq;
     final private int source;
 
     public Dijkstra(Graph graph, int source) {
@@ -64,7 +64,7 @@ public class Dijkstra {
             return null;
         }
 
-        for (; d != this.source;) {
+        for (; d != this.source; ) {
             DirectedEdge edge = edgeTo[d];
             path.add(0, edge);
             d = edge.getSource();
@@ -84,7 +84,7 @@ public class Dijkstra {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int y = G.board.getHeight()-1; y >= 0; y--) {
+        for (int y = G.board.getHeight() - 1; y >= 0; y--) {
             for (int x = 0; x < G.board.getWidth(); x++) {
                 double distance = distTo[G.board.valueOfPoint(new Point(y, x))];
                 if (distance != Double.POSITIVE_INFINITY)
@@ -92,7 +92,7 @@ public class Dijkstra {
                 else
                     sb.append(" ---");
 
-                if (x != G.board.getWidth()-1)
+                if (x != G.board.getWidth() - 1)
                     sb.append(" ");
             }
             sb.append("\n");

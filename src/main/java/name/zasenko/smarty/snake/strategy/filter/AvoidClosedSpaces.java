@@ -7,7 +7,6 @@ import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.CC;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
-import name.zasenko.smarty.snake.graph.Graph;
 
 import java.util.*;
 

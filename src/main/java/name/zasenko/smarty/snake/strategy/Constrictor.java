@@ -6,7 +6,9 @@ import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
-import name.zasenko.smarty.snake.strategy.filter.*;
+import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
+import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpacesWithoutExpansion;
+import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
 import java.util.List;
 import java.util.stream.Collectors;

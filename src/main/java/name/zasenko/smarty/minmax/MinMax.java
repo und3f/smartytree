@@ -34,11 +34,12 @@ public class MinMax {
         return (me.getLength() - opponent.getLength()) * LENGTH_MULTIPLIER;
     }
 
-    static class DirectionPriority implements Comparable<DirectionPriority>{
+    static class DirectionPriority implements Comparable<DirectionPriority> {
         private final double score;
 
         @Getter
         private final Direction direction;
+
         DirectionPriority(Direction direction, double score) {
             this.direction = direction;
             this.score = score;
@@ -46,7 +47,7 @@ public class MinMax {
 
         @Override
         public int compareTo(DirectionPriority directionPriority) {
-            return (int)(score - directionPriority.score);
+            return (int) (score - directionPriority.score);
         }
     }
 }

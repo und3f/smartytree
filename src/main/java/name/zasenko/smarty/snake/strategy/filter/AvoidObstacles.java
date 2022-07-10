@@ -25,7 +25,7 @@ public class AvoidObstacles implements StrategyFilter {
         if (me.getHealth() == 100)
             obstacles.add(body.get(body.size() - 1));
 
-        for (Iterator<GameState.Snake> it = board.getSnakes().iterator(); it.hasNext();) {
+        for (Iterator<GameState.Snake> it = board.getSnakes().iterator(); it.hasNext(); ) {
             GameState.Snake snake = it.next();
             if (snake.equals(me))
                 continue;
@@ -53,11 +53,11 @@ public class AvoidObstacles implements StrategyFilter {
             obstacles.addAll(snake.getBody().subList(1, snake.getBody().size() - 1));
         }
 
-        for (Iterator<Point> it = obstacles.iterator(); it.hasNext();) {
+        for (Iterator<Point> it = obstacles.iterator(); it.hasNext(); ) {
             avoider.avoidObstacle(it.next());
         }
 
-        for (Iterator<Point> it = possibleObstacles.iterator(); it.hasNext();) {
+        for (Iterator<Point> it = possibleObstacles.iterator(); it.hasNext(); ) {
             if (possibleMoves.size() <= 1)
                 break;
             Point obstacle = it.next();

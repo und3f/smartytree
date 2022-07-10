@@ -1,6 +1,5 @@
 package name.zasenko.smarty.snake.graph;
 
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 
 public class GraphFoodHazard extends Graph {

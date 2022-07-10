@@ -109,14 +109,14 @@ public class SnakeService implements Service {
 
     private static <T> T processErrors(Throwable ex, ServerResponse response) {
 
-        if (ex.getCause() instanceof JsonException){
+        if (ex.getCause() instanceof JsonException) {
 
             LOGGER.log(Level.FINE, "Invalid JSON", ex);
             JsonObject jsonErrorObject = JSON.createObjectBuilder()
                     .add("error", "Invalid JSON")
                     .build();
             response.status(Http.Status.BAD_REQUEST_400).send(jsonErrorObject);
-        }  else {
+        } else {
 
             LOGGER.log(Level.SEVERE, "Internal error {0}", ex);
             JsonObject jsonErrorObject = JSON.createObjectBuilder()

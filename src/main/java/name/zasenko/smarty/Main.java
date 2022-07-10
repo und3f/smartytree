@@ -1,4 +1,3 @@
-
 package name.zasenko.smarty;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -27,6 +26,7 @@ public final class Main {
 
     /**
      * Application main entry point.
+     *
      * @param args command line arguments.
      */
     public static void main(final String[] args) {
@@ -35,6 +35,7 @@ public final class Main {
 
     /**
      * Start the server.
+     *
      * @return the created {@link WebServer} instance
      */
     static Single<WebServer> startServer() {
@@ -73,8 +74,8 @@ public final class Main {
     /**
      * Creates new {@link Routing}.
      *
-     * @return routing configured with JSON support, a health check, and a service
      * @param config configuration of this server
+     * @return routing configured with JSON support, a health check, and a service
      */
     private static Routing createRouting(Config config) {
 

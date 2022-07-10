@@ -4,7 +4,6 @@ import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 
 import java.util.List;
-import java.util.ListIterator;
 
 public class AvoidBorders implements StrategyFilter {
     @Override
@@ -12,7 +11,7 @@ public class AvoidBorders implements StrategyFilter {
         final var board = ctx.getBoard();
         final var head = ctx.getMe().getHead();
 
-        for (var it = possibleMoves.listIterator(); it.hasNext();) {
+        for (var it = possibleMoves.listIterator(); it.hasNext(); ) {
             if (board.movePoint(head, it.next()) == null) {
                 it.remove();
             }

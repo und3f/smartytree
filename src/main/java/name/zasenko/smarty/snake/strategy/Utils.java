@@ -75,7 +75,7 @@ public class Utils {
                 Comparator.comparingDouble(i -> distances[i])
         );
 
-        for (ListIterator<Point> it = points.listIterator(); it.hasNext();) {
+        for (ListIterator<Point> it = points.listIterator(); it.hasNext(); ) {
             final int i = it.nextIndex();
             distances[i] = dijkstra.findDistance(it.next());
             distancePQ.add(i);
