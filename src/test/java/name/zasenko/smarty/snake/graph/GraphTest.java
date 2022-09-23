@@ -68,7 +68,7 @@ public class GraphTest extends BaseUnitTestHelper {
         assertTrue(adjanced.stream().anyMatch(edge -> edge.getDestination() == v44));
         assertTrue(adjanced.stream().anyMatch(edge -> edge.getDestination() == v35));
 
-        CC cc = new CC(graph);
+        CC cc = new CC(graph, Integer.MAX_VALUE);
         assertTrue(cc.connected(v44, v35));
 
         assertTrue(!cc.connected(v44, v14));
@@ -88,7 +88,7 @@ public class GraphTest extends BaseUnitTestHelper {
         final int headRight = board.valueOfPoint(board.movePoint(head, Direction.right));
         final int headLeft = board.valueOfPoint(board.movePoint(head, Direction.left));
 
-        CC cc = new CC(graph);
+        CC cc = new CC(graph, Integer.MAX_VALUE);
 
         assertTrue(!cc.connected(headRight, headLeft));
         assertEquals(3, cc.componentSize(headRight));

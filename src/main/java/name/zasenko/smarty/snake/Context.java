@@ -17,6 +17,9 @@ public class Context {
     @Getter
     private final int turn;
 
+    @Getter
+    private final double hazardDamage;
+
     public Context(GameState gameState) {
         this.board = gameState.getBoard();
         String rulesetName = gameState.getGame().getRuleset().getName();
@@ -29,7 +32,7 @@ public class Context {
         this.me = gameState.getYou();
         this.turn = gameState.getTurn();
 
-        var hazardDamage = gameState.getGame().getRuleset().getSettings().getHazardDamagePerTurn();
+        hazardDamage = gameState.getGame().getRuleset().getSettings().getHazardDamagePerTurn();
         this.boardGraph = new Graph(board, hazardDamage);
     }
 
@@ -37,6 +40,7 @@ public class Context {
         this.board = board;
         this.me = me;
         this.turn = turn;
+        this.hazardDamage = hazardDamage;
 
         this.boardGraph = new Graph(board, hazardDamage);
     }

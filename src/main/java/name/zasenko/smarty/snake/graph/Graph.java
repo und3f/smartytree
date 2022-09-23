@@ -41,6 +41,7 @@ public class Graph {
                 ttl++;
             }
 
+
             for (Point p : board.getHazards()) {
                 this.hazards.put(board.valueOfPoint(p), hazardWeight);
             }

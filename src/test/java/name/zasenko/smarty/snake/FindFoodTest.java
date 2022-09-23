@@ -56,4 +56,9 @@ public class FindFoodTest extends BaseUnitTestHelper {
         assertEquals(Direction.down, RunStrategy("maze/exception"));
     }
 
+    @Test
+    void testMaze5() throws IOException {
+        assertEquals(Direction.up, RunStrategy("maze/avoid-closed-spaces"));
+    }
+
 }

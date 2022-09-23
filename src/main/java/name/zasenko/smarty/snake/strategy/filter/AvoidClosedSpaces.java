@@ -22,7 +22,7 @@ public class AvoidClosedSpaces implements StrategyFilter {
         final var board = ctx.getBoard();
         final var boardGraph = ctx.getBoardGraph();
 
-        CC cc = new CC(boardGraph);
+        CC cc = new CC(boardGraph, ctx.getMe().getHealth());
         Integer[] areaSizes = new Integer[possibleMoves.size()];
 
         Set<Integer> expandingClusters = getExpandingClusters(ctx, cc);

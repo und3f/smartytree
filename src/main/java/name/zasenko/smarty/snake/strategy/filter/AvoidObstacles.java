@@ -53,6 +53,11 @@ public class AvoidObstacles implements StrategyFilter {
             obstacles.addAll(snake.getBody().subList(1, snake.getBody().size() - 1));
         }
 
+        if (ctx.getHazardDamage() >= ctx.getMe().getHealth()) {
+            obstacles.addAll(ctx.getBoard().getHazards());
+        }
+
+
         for (Iterator<Point> it = obstacles.iterator(); it.hasNext(); ) {
             avoider.avoidObstacle(it.next());
         }

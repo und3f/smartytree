@@ -18,4 +18,11 @@ public class ConstrictorTest extends BaseUnitTestHelper {
 
         assertEquals(Direction.up, new Context(gameState).findMove(new Constrictor()));
     }
+
+    @Test
+    void constrictorMaze() throws IOException {
+        GameState gameState = readState("constrictor/constrictor-maze");
+
+        assertEquals(Direction.down, new Context(gameState).findMove(new Constrictor()));
+    }
 }
