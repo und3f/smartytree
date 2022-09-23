@@ -21,12 +21,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SnakeService implements Service {
-    private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
-
-    private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
     public static final String CONFIG_PREFIX = "app.snake.";
     public static final String DEFAULT_SKIN = "default";
-
+    private static final JsonBuilderFactory JSON = Json.createBuilderFactory(Collections.emptyMap());
+    private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
     private final String name;
     private final String color;
     private final String head;
@@ -42,6 +40,27 @@ public class SnakeService implements Service {
         final String strategyName = config.get(CONFIG_PREFIX + "strategy").asString().orElse(StrategyFactory.StrategyFindFood);
         LOGGER.log(Level.INFO, "Building strategy {0}", strategyName);
         this.defaultStrategy = StrategyFactory.build(strategyName);
+    }
+
+    private static <T> T processErrors(Throwable ex, ServerResponse response) {
+
+        if (ex.getCause() instanceof JsonException) {
+
+            LOGGER.log(Level.FINE, "Invalid JSON", ex);
+            JsonObject jsonErrorObject = JSON.createObjectBuilder()
+                    .add("error", "Invalid JSON")
+                    .build();
+            response.status(Http.Status.BAD_REQUEST_400).send(jsonErrorObject);
+        } else {
+
+            LOGGER.log(Level.SEVERE, "Internal error {0}", ex);
+            JsonObject jsonErrorObject = JSON.createObjectBuilder()
+                    .add("error", "Internal error")
+                    .build();
+            response.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(jsonErrorObject);
+        }
+
+        return null;
     }
 
     @Override
@@ -83,7 +102,10 @@ public class SnakeService implements Service {
 
     private void performTurn(GameState gameState, ServerResponse response) {
         var strategy = defaultStrategy;
-        if (gameState.getGame().getRuleset().getName().equals(GameState.Ruleset.CONSTRICTOR)) {
+        final String rulesetName = gameState.getGame().getRuleset().getName();
+        if (rulesetName.equals(GameState.Ruleset.CONSTRICTOR)
+                || rulesetName.equals(GameState.Ruleset.WRAPPED_CONSTRICTOR)
+        ) {
             strategy = new Constrictor();
         }
 
@@ -105,27 +127,6 @@ public class SnakeService implements Service {
     private void okResponse(ServerResponse response) {
         JsonObject returnObject = JSON.createObjectBuilder().build();
         response.send(returnObject);
-    }
-
-    private static <T> T processErrors(Throwable ex, ServerResponse response) {
-
-        if (ex.getCause() instanceof JsonException) {
-
-            LOGGER.log(Level.FINE, "Invalid JSON", ex);
-            JsonObject jsonErrorObject = JSON.createObjectBuilder()
-                    .add("error", "Invalid JSON")
-                    .build();
-            response.status(Http.Status.BAD_REQUEST_400).send(jsonErrorObject);
-        } else {
-
-            LOGGER.log(Level.SEVERE, "Internal error {0}", ex);
-            JsonObject jsonErrorObject = JSON.createObjectBuilder()
-                    .add("error", "Internal error")
-                    .build();
-            response.status(Http.Status.INTERNAL_SERVER_ERROR_500).send(jsonErrorObject);
-        }
-
-        return null;
     }
 
 }

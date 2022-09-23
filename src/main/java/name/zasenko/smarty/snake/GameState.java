@@ -46,6 +46,7 @@ public class GameState {
         public static final String ROYALE = "royale";
         public static final String SQUAD = "squad";
         public static final String CONSTRICTOR = "constrictor";
+        public static final String WRAPPED_CONSTRICTOR = "wrapped-constrictor";
         public static final String WRAPPED = "wrapped";
         @Getter
         @Setter

@@ -19,7 +19,10 @@ public class Context {
 
     public Context(GameState gameState) {
         this.board = gameState.getBoard();
-        if (gameState.getGame().getRuleset().getName().equals(GameState.Ruleset.WRAPPED)) {
+        String rulesetName = gameState.getGame().getRuleset().getName();
+        if (rulesetName.equals(GameState.Ruleset.WRAPPED)
+            || rulesetName.equals(GameState.Ruleset.WRAPPED_CONSTRICTOR)
+        ) {
             this.board.setMoveStrategy(this.board.new WrapMoveStrategy());
         }
 
