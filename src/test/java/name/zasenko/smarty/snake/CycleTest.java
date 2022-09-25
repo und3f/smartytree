@@ -3,6 +3,7 @@ package name.zasenko.smarty.snake;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import name.zasenko.smarty.BaseUnitTestHelper;
 import name.zasenko.smarty.snake.strategy.Cycle;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -39,5 +40,14 @@ public class CycleTest extends BaseUnitTestHelper {
 
     assertEquals(Direction.up, new Context(gameState).findMove(new Cycle()));
   }
+
+  @Disabled
+  @Test
+  void eatBeforeStarving() throws IOException {
+    GameState gameState = readState("cycle/last-chance-eat-test2");
+
+    assertEquals(Direction.right, new Context(gameState).findMove(new Cycle()));
+  }
+
 
 }
