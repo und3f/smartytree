@@ -9,6 +9,7 @@ import io.helidon.webserver.Service;
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.strategy.Constrictor;
+import name.zasenko.smarty.snake.strategy.Fill;
 import name.zasenko.smarty.snake.strategy.Strategy;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 
@@ -101,13 +102,7 @@ public class SnakeService implements Service {
     }
 
     private void performTurn(GameState gameState, ServerResponse response) {
-        var strategy = defaultStrategy;
-        final String rulesetName = gameState.getGame().getRuleset().getName();
-        if (rulesetName.equals(GameState.Ruleset.CONSTRICTOR)
-                || rulesetName.equals(GameState.Ruleset.WRAPPED_CONSTRICTOR)
-        ) {
-            strategy = new Constrictor();
-        }
+        Strategy strategy = getStrategyForRuleset(gameState.getGame().getRuleset().getName());
 
         LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
         // LOGGER.log(Level.INFO, "Strategy #{0}", strategy.toString());
@@ -127,6 +122,18 @@ public class SnakeService implements Service {
     private void okResponse(ServerResponse response) {
         JsonObject returnObject = JSON.createObjectBuilder().build();
         response.send(returnObject);
+    }
+
+    private Strategy getStrategyForRuleset(String ruleset) {
+        switch (ruleset) {
+            case GameState.Ruleset.CONSTRICTOR:
+            case GameState.Ruleset.WRAPPED_CONSTRICTOR:
+                return new Constrictor();
+            case GameState.Ruleset.SOLO:
+                return new Fill();
+            default:
+                return defaultStrategy;
+        }
     }
 
 }

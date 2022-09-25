@@ -48,6 +48,8 @@ public class GameState {
         public static final String CONSTRICTOR = "constrictor";
         public static final String WRAPPED_CONSTRICTOR = "wrapped-constrictor";
         public static final String WRAPPED = "wrapped";
+        public static final String SOLO = "solo";
+
         @Getter
         @Setter
         private String name, version;
