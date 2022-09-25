@@ -11,6 +11,7 @@ import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class Cycle implements Strategy {
@@ -20,7 +21,6 @@ public class Cycle implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         final var me = ctx.getMe();
-        final var board = ctx.getBoard();
 
         if (me.getLength() == 0)
             return Direction.down;
@@ -34,16 +34,17 @@ public class Cycle implements Strategy {
             return possibleMoves.get(0);
         }
 
-        final var body = ctx.getMe().getBody();
         final Point head = ctx.getMe().getHead();
         final Point tail = ctx.getMe().tail();
 
-        Dijkstra foodDijkstra = new Dijkstra(ctx.getBoardGraph(), head);
-        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), foodDijkstra);
+        Dijkstra dijkstraHead = new Dijkstra(ctx.getBoardGraph(), head);
+        Dijkstra dijkstraTail = new Dijkstra(ctx.getBoardGraph(), tail);
+        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), new Dijkstra[]{dijkstraHead, dijkstraTail});
+
         int foodReserve = 3;
-        if (foodDijkstra.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
+        if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
             // System.out.println("Move to food");
-            return Utils.moveThruPath(ctx, possibleMoves, foodDijkstra.findPath(closestFood));
+            return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
         }
 
         // Do not enter closed without insufficient health
@@ -51,7 +52,7 @@ public class Cycle implements Strategy {
         if (ctx.getBoardGraph().adj(ctx.getMe().tail(tailOffset), 0).size() <= 1) {
             if (ctx.getMe().getHealth() <= ctx.getMe().getLength()) {
                 // System.out.println("Last chance to eat");
-                return Utils.moveThruPath(ctx, possibleMoves, foodDijkstra.findPath(closestFood));
+                return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
             }
         }
 
@@ -69,10 +70,17 @@ public class Cycle implements Strategy {
             return Utils.moveTowards(ctx, possibleMoves, tail);
         }
 
+        return moveToTail(ctx, possibleMoves, dijkstra);
+    }
+
+    private Direction moveToTail(Context ctx, List<Direction> possibleMoves, Dijkstra dijkstra) {
         // System.out.println("To tail");
         var aroundTail = ctx.getBoardGraph()
                 .pointsAround(ctx.getMe().tail(1), 0)
                 .stream().map(DirectedEdge::getDestination).collect(Collectors.toList());
+
+        if (aroundTail.size() < 1)
+            return Utils.randomMove(possibleMoves);
 
         int destination = aroundTail.get(0);
         for (int p : aroundTail) {

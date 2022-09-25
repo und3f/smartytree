@@ -84,4 +84,29 @@ public class Utils {
         Integer closestPointIndex = distancePQ.poll();
         return points.get(closestPointIndex);
     }
+
+    public static Point findClosestPoint(List<Point> points, Dijkstra[] waypoints) {
+        if (points.size() == 0)
+            return null;
+
+        double[] distances = new double[points.size()];
+        PriorityQueue<Integer> distancePQ = new PriorityQueue<>(points.size(),
+                Comparator.comparingDouble(i -> distances[i])
+        );
+
+        for (ListIterator<Point> it = points.listIterator(); it.hasNext(); ) {
+            final int i = it.nextIndex();
+            Point dst = it.next();
+
+            double distance = 0.;
+            for (Dijkstra d : waypoints)
+                distance += d.findDistance(dst);
+
+            distances[i] = distance;
+            distancePQ.add(i);
+        }
+
+        Integer closestPointIndex = distancePQ.poll();
+        return points.get(closestPointIndex);
+    }
 }
