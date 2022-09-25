@@ -3,10 +3,7 @@ package name.zasenko.smarty.snake.strategy;
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.Point;
-import name.zasenko.smarty.snake.graph.Dijkstra;
-import name.zasenko.smarty.snake.graph.DirectedEdge;
-import name.zasenko.smarty.snake.graph.Graph;
-import name.zasenko.smarty.snake.graph.GraphFoodHazard;
+import name.zasenko.smarty.snake.graph.*;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
@@ -38,8 +35,15 @@ public class Cycle implements Strategy {
         final Point tail = ctx.getMe().tail();
 
         Dijkstra dijkstraHead = new Dijkstra(ctx.getBoardGraph(), head);
-        Dijkstra dijkstraTail = new Dijkstra(ctx.getBoardGraph(), tail);
-        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), new Dijkstra[]{dijkstraHead, dijkstraTail});
+        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), dijkstraHead);
+
+        if (ctx.getTurn() > 700) {
+            List<DirectedEdge> path = new TSP(ctx.getBoardGraph(), head).findLongestPath();
+            if (path != null) {
+                System.out.println(path);
+                return Utils.moveThruPath(ctx, possibleMoves, path);
+            }
+        }
 
         int foodReserve = 3;
         if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
