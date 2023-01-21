@@ -6,6 +6,7 @@ import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
+import name.zasenko.smarty.snake.graph.LSP;
 import name.zasenko.smarty.snake.strategy.filter.AvoidProblems;
 
 import java.util.*;
@@ -108,5 +109,14 @@ public class Utils {
 
         Integer closestPointIndex = distancePQ.poll();
         return points.get(closestPointIndex);
+    }
+
+    public static Direction fillSpace(Context ctx, List<Direction> possibleMoves) {
+        List<DirectedEdge> path = new LSP(ctx.getBoardGraph(), ctx.getMe().getHead()).findLongestPath();
+        if (path != null) {
+            return Utils.moveThruPath(ctx, possibleMoves, path);
+        }
+
+        return Utils.moveForward(ctx, possibleMoves);
     }
 }

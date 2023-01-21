@@ -41,7 +41,7 @@ public class CycleTest extends BaseUnitTestHelper {
     assertEquals(Direction.up, new Context(gameState).findMove(new Cycle()));
   }
 
-  @Disabled
+  @Disabled("Not implemented")
   @Test
   void eatBeforeStarving() throws IOException {
     GameState gameState = readState("cycle/last-chance-eat-test2");

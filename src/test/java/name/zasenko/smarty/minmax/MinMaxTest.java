@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.IOException;
 
 public class MinMaxTest extends BaseUnitTestHelper {
-    @Disabled
+    @Disabled("Not implemented")
     @Test
     void ScoreTests() throws IOException {
         Context context = new Context(this.readState("sample-state"));
@@ -22,7 +22,7 @@ public class MinMaxTest extends BaseUnitTestHelper {
         assertTrue(MinMax.calculateScore(context, me, opponent.get()) < 0);
     }
 
-    @Disabled
+    @Disabled("Not implemented")
     @Test
     void WinScoreTests() throws IOException {
         Context context = new Context(this.readState("minmax/win"));
@@ -36,7 +36,7 @@ public class MinMaxTest extends BaseUnitTestHelper {
 
     }
 
-    @Disabled
+    @Disabled("Not implemented")
     @Test
     void LastMoveScoreTest() throws IOException {
         Context context = new Context(this.readState("minmax/last-move"));

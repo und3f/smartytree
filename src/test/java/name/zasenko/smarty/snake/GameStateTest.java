@@ -49,7 +49,7 @@ public class GameStateTest extends BaseUnitTestHelper {
     assertEquals(sampleBoard.getSnakes(), cloneBoard.getSnakes());
   }
 
-  @Disabled
+  @Disabled("Not implemented")
   @Test
   void cloneMoveStrategyTest() {
     GameState.Board board = newBoard(7, 7);

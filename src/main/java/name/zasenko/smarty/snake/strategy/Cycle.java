@@ -37,13 +37,8 @@ public class Cycle implements Strategy {
         Dijkstra dijkstraHead = new Dijkstra(ctx.getBoardGraph(), head);
         Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), dijkstraHead);
 
-        if (ctx.getTurn() > 700) {
-            List<DirectedEdge> path = new TSP(ctx.getBoardGraph(), head).findLongestPath();
-            if (path != null) {
-                System.out.println(path);
-                return Utils.moveThruPath(ctx, possibleMoves, path);
-            }
-        }
+        if (ctx.getTurn() > 700)
+            return Utils.fillSpace(ctx, possibleMoves);
 
         int foodReserve = 3;
         if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
