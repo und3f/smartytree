@@ -20,11 +20,12 @@ public class FindFood implements Strategy {
         GameState.Snake me = ctx.getMe();
         final var possibleMoves = Utils.initPossibleDirections(ctx, me);
 
-        Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), me.getHead());
 
         if (possibleMoves.size() == 1) {
             return Utils.moveForward(ctx, possibleMoves);
         }
+
+        Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), me.getHead());
 
         List<Point> targets = new ArrayList<Point>(board.getFood());
 

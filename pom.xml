@@ -6,7 +6,7 @@
     <parent>
         <groupId>io.helidon.applications</groupId>
         <artifactId>helidon-se</artifactId>
-        <version>2.5.0</version>
+        <version>3.2.1</version>
         <relativePath/>
     </parent>
     <groupId>name.zasenko.smarty</groupId>
@@ -16,6 +16,8 @@
 
     <properties>
         <mainClass>name.zasenko.smarty.Main</mainClass>
+        <lombokVersion>1.18.28</lombokVersion>
+        <helidonWebserverJsonVersion>0.11.0</helidonWebserverJsonVersion>
     </properties>
 
     <dependencies>
@@ -24,8 +26,9 @@
             <artifactId>helidon-webserver</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.helidon.media</groupId>
-            <artifactId>helidon-media-jsonp</artifactId>
+            <groupId>io.helidon.webserver</groupId>
+            <artifactId>helidon-webserver-json</artifactId>
+            <version>${helidonWebserverJsonVersion}</version>
         </dependency>
         <dependency>
             <groupId>io.helidon.config</groupId>
@@ -56,6 +59,7 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+            <version>${lombokVersion}</version>
         </dependency>
         <dependency>
             <groupId>io.helidon.media</groupId>
