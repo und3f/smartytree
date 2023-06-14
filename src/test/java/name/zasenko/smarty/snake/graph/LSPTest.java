@@ -1,8 +1,6 @@
 package name.zasenko.smarty.snake.graph;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
-import name.zasenko.smarty.snake.GameState;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;

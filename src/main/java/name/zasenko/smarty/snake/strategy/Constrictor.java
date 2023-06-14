@@ -9,7 +9,6 @@ import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpacesWithoutExpansion;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -31,7 +30,7 @@ public class Constrictor implements Strategy {
         return Utils.fillSpace(ctx, possibleMoves);
     }
 
-    private boolean isSnakeAlone(Context ctx) {
+    public boolean isSnakeAlone(Context ctx) {
         GameState.Snake me = ctx.getMe();
         // TODO cache CC computation
         CC cc = new CC(ctx.getBoardGraph(), ctx.getMe().getHealth());
@@ -43,10 +42,10 @@ public class Constrictor implements Strategy {
                 continue;
 
             if (getSnakeClustersStream(ctx, snake, cc).anyMatch(clusters::contains))
-                return true;
+                return false;
         }
 
-        return false;
+        return true;
     }
 
     private List<Direction> initConstrictorModePossibleMoves(Context ctx) {
