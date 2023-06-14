@@ -18,22 +18,22 @@ public class FindFoodTest extends BaseUnitTestHelper {
 
     @Test
     void moveDecisionToTailTest() throws IOException {
-        assertEquals(Direction.up, this.RunStrategy("tail-test-state"));
+        assertEquals(Direction.up, this.RunStrategy("findfood/tail-test"));
     }
 
     @Test
     void moveDecisionToTail2Test() throws IOException {
-        assertEquals(Direction.left, this.RunStrategy("tail-test2-state"));
+        assertEquals(Direction.left, this.RunStrategy("findfood/tail-test2"));
     }
 
     @Test
     void avoidClosedSpace() throws IOException {
-        assertEquals(Direction.left, this.RunStrategy("findfood-closed-test"));
+        assertEquals(Direction.left, this.RunStrategy("findfood/closed"));
     }
 
     @Test
     void preferOthersTailOverClosedSpace() throws IOException {
-        assertEquals(Direction.right, this.RunStrategy("findfood-others-tail"));
+        assertEquals(Direction.right, this.RunStrategy("findfood/others-tail"));
     }
 
     @Test

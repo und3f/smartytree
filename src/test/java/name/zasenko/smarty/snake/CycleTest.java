@@ -15,7 +15,7 @@ public class CycleTest extends BaseUnitTestHelper {
 
   @Test
   void MoveDecisionAvoidSelf() throws IOException {
-    GameState gameState = readState("avoid-tail-test");
+    GameState gameState = readState("cycle/avoid-tail-test");
 
     assertNotEquals(Direction.left, new Context(gameState).findMove(new Cycle()));
   }

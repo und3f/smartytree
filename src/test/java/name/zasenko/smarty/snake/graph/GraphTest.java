@@ -18,11 +18,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GraphTest extends BaseUnitTestHelper {
 
-    public static final String GRAPH_TEST_2_STATE = "graph-test2-state";
-
     @Test
     void TestAdjacentSimple() throws IOException {
-        GameState gameState = this.readState("graph-test-state");
+        GameState gameState = this.readState("graph/state1");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);
@@ -34,7 +32,7 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void TestAdjacentFromSnakeHead() throws IOException {
-        GameState gameState = this.readState("graph-test-state");
+        GameState gameState = this.readState("graph/state1");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);
@@ -50,7 +48,7 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void PointUtilsTests() throws IOException {
-        GameState gameState = this.readState("graph-test-state");
+        GameState gameState = this.readState("graph/state1");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);
@@ -78,7 +76,7 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void PointTTLTest() throws IOException {
-        GameState gameState = this.readState(GRAPH_TEST_2_STATE);
+        GameState gameState = this.readState("graph/state2");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);
@@ -100,7 +98,7 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void toStringTest() throws IOException {
-        GameState gameState = this.readState(GRAPH_TEST_2_STATE);
+        GameState gameState = this.readState("graph/state2");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);
@@ -112,7 +110,7 @@ public class GraphTest extends BaseUnitTestHelper {
     @Test
     void StackedHazardsTest() throws IOException {
 
-        GameState gameState = this.readState("snail/graph");
+        GameState gameState = this.readState("graph/snail");
 
         final GameState.Board board = gameState.getBoard();
         Graph graph = new Graph(board);

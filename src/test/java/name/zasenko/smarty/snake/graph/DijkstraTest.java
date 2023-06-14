@@ -19,7 +19,7 @@ public class DijkstraTest extends BaseUnitTestHelper {
 
     @BeforeEach
     void initGraph() throws IOException {
-        gameState = this.readState("findfood-closed-test");
+        gameState = this.readState("findfood/closed");
 
         graph = new Graph(gameState.getBoard());
     }

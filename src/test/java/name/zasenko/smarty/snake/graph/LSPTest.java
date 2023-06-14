@@ -13,7 +13,7 @@ public class LSPTest extends BaseUnitTestHelper {
 
     @Test
     void testLongestSimplePath() throws IOException {
-        var gameState = this.readState("findfood-closed-test");
+        var gameState = this.readState("findfood/closed");
         var graph = new Graph(gameState.getBoard());
         LSP lsp = new LSP(graph, gameState.getYou().getHead());
         final List<DirectedEdge> path = lsp.findLongestPath();
