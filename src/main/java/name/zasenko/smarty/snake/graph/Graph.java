@@ -11,16 +11,15 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Graph {
-    public static final double WEIGHT = 1.0;
-    public static final double HAZARD_WEIGHT = 14.0;
+    public static final double MOVE_WEIGHT = 1.0;
+    public static final double DEFAULT_HAZARD_WEIGHT = 14.0;
+    protected final Map<Integer, Double> hazards;
     final GameState.Board board;
-
     final double hazardWeight;
     private final Map<Integer, Integer> obstacles;
-    protected final Map<Integer, Double> hazards;
 
     public Graph(GameState.Board board) {
-        this(board, HAZARD_WEIGHT);
+        this(board, DEFAULT_HAZARD_WEIGHT);
     }
 
     public Graph(GameState.Board board, double hazardWeight) {
@@ -40,11 +39,12 @@ public class Graph {
                 }
                 ttl++;
             }
+        }
 
-
-            for (Point p : board.getHazards()) {
-                this.hazards.put(board.valueOfPoint(p), hazardWeight);
-            }
+        for (Point p : board.getHazards()) {
+            int v = board.valueOfPoint(p);
+            double weight = hazardWeight + hazards.getOrDefault(v, 0.);
+            hazards.put(board.valueOfPoint(p), weight);
         }
     }
 
@@ -81,12 +81,7 @@ public class Graph {
     }
 
     private double getMoveWeight(int destination) {
-        Double hazard = hazards.get(destination);
-        if (hazard != null) {
-            return hazard;
-        }
-
-        return WEIGHT;
+        return hazards.getOrDefault(destination, MOVE_WEIGHT);
     }
 
     public String toString() {

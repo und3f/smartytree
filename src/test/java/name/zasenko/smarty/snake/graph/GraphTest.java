@@ -109,4 +109,17 @@ public class GraphTest extends BaseUnitTestHelper {
         assertEquals(this.getResourceContent("output/graph-test2-output.txt"), str);
     }
 
+    @Test
+    void StackedHazardsTest() throws IOException {
+
+        GameState gameState = this.readState("snail/graph");
+
+        final GameState.Board board = gameState.getBoard();
+        Graph graph = new Graph(board);
+
+        List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(3, 2)), 0);
+        int rightPoint = board.valueOfPoint(new Point(3, 3));
+        DirectedEdge right = adjacent.stream().filter(edge -> edge.getDestination() == rightPoint).findFirst().get();
+        assertEquals(graph.hazardWeight * 6, right.getWeight(), 0.001f);
+    }
 }

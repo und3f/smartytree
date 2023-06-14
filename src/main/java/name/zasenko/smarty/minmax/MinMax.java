@@ -18,7 +18,7 @@ public class MinMax {
     }
 
     private void findSnakeMove(Context context, GameState.Snake snake) {
-        Context localContext = new Context(context.getBoard(), snake, 0, Graph.HAZARD_WEIGHT);
+        Context localContext = new Context(context.getBoard(), snake, 0, Graph.DEFAULT_HAZARD_WEIGHT);
         List<Direction> moves = Utils.initPossibleDirections(localContext, snake);
     }
 

@@ -7,7 +7,7 @@ public class GraphFoodHazard extends Graph {
         super(G.board, G.hazardWeight);
 
         for (Point p : board.getFood()) {
-            hazards.put(board.valueOfPoint(p), HAZARD_WEIGHT);
+            hazards.put(board.valueOfPoint(p), DEFAULT_HAZARD_WEIGHT);
         }
     }
 }

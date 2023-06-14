@@ -12,7 +12,7 @@ public class CC {
 
     public CC(Graph graph, int maxHazard) {
         this.G = graph;
-        this.maxHazard = (int) Math.max(maxHazard, Graph.WEIGHT * 2);
+        this.maxHazard = (int) Math.max(maxHazard, Graph.MOVE_WEIGHT * 2);
 
         marked = new boolean[G.V()];
         id = new int[G.V()];
