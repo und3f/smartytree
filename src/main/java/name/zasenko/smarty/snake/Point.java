@@ -55,6 +55,11 @@ public class Point implements Comparable<Point> {
     }
 
     @Override
+    public int hashCode() {
+        return 1000 * y + x;
+    }
+
+    @Override
     public int compareTo(Point p2) {
         int compare = this.y - p2.y;
         if (compare == 0)
