@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class VoronoiTest extends BaseUnitTestHelper {
-    
+
     @Test
     void basicTest() throws IOException {
         var gameState = this.readState("sample-state");

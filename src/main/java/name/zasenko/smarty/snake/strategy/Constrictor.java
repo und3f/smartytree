@@ -3,12 +3,14 @@ package name.zasenko.smarty.snake.strategy;
 import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.graph.CC;
 import name.zasenko.smarty.snake.strategy.filter.AreaControl;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpacesWithoutExpansion;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -62,6 +64,21 @@ public class Constrictor implements Strategy {
                 .map(d -> board.movePoint(snake.getHead(), d))
                 .filter(Objects::nonNull)
                 .map(p -> cc.id(board.valueOfPoint(p)));
+    }
+
+    private GameState.Snake moveSnake(GameState.Board board, GameState.Snake snake, Direction direction) {
+        var newHead = board.movePoint(snake.getHead(), direction);
+        List<Point> newBody = new ArrayList<>(snake.getLength() + 1);
+        newBody.add(newHead);
+        newBody.addAll(snake.getBody());
+
+        GameState.Snake newSnake = new GameState.Snake();
+        newSnake.setHead(newHead);
+        newSnake.setBody(newBody);
+        newSnake.setHealth(snake.getHealth());
+        newSnake.setLength(newBody.size());
+
+        return newSnake;
     }
 
 }
