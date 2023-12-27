@@ -84,15 +84,15 @@ public class Dijkstra {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int y = G.board.getHeight() - 1; y >= 0; y--) {
-            for (int x = 0; x < G.board.getWidth(); x++) {
+        for (int y = G.board.height() - 1; y >= 0; y--) {
+            for (int x = 0; x < G.board.width(); x++) {
                 double distance = distTo[G.board.valueOfPoint(new Point(y, x))];
                 if (distance != Double.POSITIVE_INFINITY)
                     sb.append(String.format("%4.1f", distance));
                 else
                     sb.append(" ---");
 
-                if (x != G.board.getWidth() - 1)
+                if (x != G.board.width() - 1)
                     sb.append(" ");
             }
             sb.append("\n");

@@ -1,32 +1,31 @@
 package name.zasenko.smarty.snake.graph;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
-import name.zasenko.smarty.snake.GameState;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import name.zasenko.smarty.snake.Point;
-import org.junit.jupiter.api.BeforeAll;
+import name.zasenko.smarty.snake.context.Context;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 public class DijkstraTest extends BaseUnitTestHelper {
-    private GameState gameState;
+    private Context context;
     private Graph graph;
 
     @BeforeEach
     void initGraph() throws IOException {
-        gameState = this.readState("findfood/closed");
+        context = this.readContext("findfood/closed");
 
-        graph = new Graph(gameState.getBoard());
+        graph = new Graph(context.gameStateContext());
     }
 
     @Test
     void testSimpleShortPath() {
-        Dijkstra dijkstra = new Dijkstra(graph, gameState.getYou().getHead());
+        Dijkstra dijkstra = new Dijkstra(graph, context.me().head());
         final List<DirectedEdge> path = dijkstra.findPath(0);
         assertNotNull(path);
         assertEquals(3, path.size());
@@ -35,7 +34,7 @@ public class DijkstraTest extends BaseUnitTestHelper {
 
     @Test
     void testShortPath() {
-        Dijkstra dijkstra = new Dijkstra(graph, gameState.getYou().getHead());
+        Dijkstra dijkstra = new Dijkstra(graph, context.me().head());
         Point destination = new Point(4, 6);
         final List<DirectedEdge> path = dijkstra.findPath(destination);
         assertNotNull(path);
@@ -45,7 +44,7 @@ public class DijkstraTest extends BaseUnitTestHelper {
 
     @Test
     void testToString() throws IOException {
-        Dijkstra dijkstra = new Dijkstra(graph, gameState.getYou().getHead());
+        Dijkstra dijkstra = new Dijkstra(graph, context.me().head());
         assertEquals(this.getResourceContent("output/graph-test-dijkstra-output.txt"), dijkstra.toString());
     }
 

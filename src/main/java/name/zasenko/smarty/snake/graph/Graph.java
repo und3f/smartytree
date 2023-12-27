@@ -1,8 +1,10 @@
 package name.zasenko.smarty.snake.graph;
 
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.context.BoardContext;
+import name.zasenko.smarty.snake.context.GameStateContext;
+import name.zasenko.smarty.snake.entities.Snake;
 
 import java.util.List;
 import java.util.Map;
@@ -14,23 +16,23 @@ public class Graph {
     public static final double MOVE_WEIGHT = 1.0;
     public static final double DEFAULT_HAZARD_WEIGHT = 14.0;
     protected final Map<Integer, Double> hazards;
-    final GameState.Board board;
-    final double hazardWeight;
+    final BoardContext board;
+    private final double hazardWeight;
     private final Map<Integer, Integer> obstacles;
 
-    public Graph(GameState.Board board) {
-        this(board, DEFAULT_HAZARD_WEIGHT);
-    }
-
-    public Graph(GameState.Board board, double hazardWeight) {
+    public Graph(BoardContext board, double hazardWeight) {
         this.board = board;
         this.hazardWeight = hazardWeight;
         obstacles = new TreeMap<>();
         hazards = new TreeMap<>();
+    }
 
-        for (GameState.Snake snake : board.getSnakes()) {
+    public Graph(GameStateContext gameStateContext) {
+        this(gameStateContext.boardContext(), gameStateContext.hazardDamage());
+
+        for (Snake snake : gameStateContext.snakes()) {
             int ttl = 0;
-            List<Point> body = snake.getBody();
+            List<Point> body = snake.body();
 
             for (int i = body.size() - 1; i >= 0; i--) {
                 if (ttl > 0) {
@@ -41,7 +43,7 @@ public class Graph {
             }
         }
 
-        for (Point p : board.getHazards()) {
+        for (Point p : gameStateContext.hazards()) {
             int v = board.valueOfPoint(p);
             double weight = hazardWeight + hazards.getOrDefault(v, 0.);
             hazards.put(board.valueOfPoint(p), weight);
@@ -49,7 +51,7 @@ public class Graph {
     }
 
     public int V() {
-        return board.getWidth() * board.getHeight();
+        return board.width() * board.height();
     }
 
     public List<DirectedEdge> adj(int v, int time) {

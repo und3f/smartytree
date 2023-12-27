@@ -1,6 +1,6 @@
 package name.zasenko.smarty.snake.strategy.filter;
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
 
 import java.util.List;

@@ -1,21 +1,23 @@
 package name.zasenko.smarty.minmax;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MinMaxTest extends BaseUnitTestHelper {
     @Disabled("Not implemented")
     @Test
     void ScoreTests() throws IOException {
-        Context context = new Context(this.readState("sample-state"));
+        Context context = this.readContext("sample-state");
 
-        var me = context.getMe();
-        var opponent  = context.getBoard().getSnakes()
+        var me = context.me();
+        var opponent  = context.gameStateContext().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());
@@ -25,10 +27,10 @@ public class MinMaxTest extends BaseUnitTestHelper {
     @Disabled("Not implemented")
     @Test
     void WinScoreTests() throws IOException {
-        Context context = new Context(this.readState("minmax/win"));
+        Context context = this.readContext("minmax/win");
 
-        var me = context.getMe();
-        var opponent = context.getBoard().getSnakes()
+        var me = context.me();
+        var opponent = context.gameStateContext().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());
@@ -39,10 +41,10 @@ public class MinMaxTest extends BaseUnitTestHelper {
     @Disabled("Not implemented")
     @Test
     void LastMoveScoreTest() throws IOException {
-        Context context = new Context(this.readState("minmax/last-move"));
+        Context context = this.readContext("minmax/last-move");
 
-        var me = context.getMe();
-        var opponent = context.getBoard().getSnakes()
+        var me = context.me();
+        var opponent = context.gameStateContext().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());

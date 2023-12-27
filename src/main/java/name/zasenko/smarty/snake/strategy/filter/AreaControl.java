@@ -1,9 +1,9 @@
 package name.zasenko.smarty.snake.strategy.filter;
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.strategy.Utils;
@@ -17,11 +17,11 @@ public class AreaControl implements StrategyFilter {
         if (possibleMoves.size() <= 1)
             return;
 
-        GameState.Snake me = ctx.getMe();
-        Dijkstra d = new Dijkstra(ctx.getBoardGraph(), me.getHead());
+        Snake me = ctx.me();
+        Dijkstra d = new Dijkstra(ctx.boardGraph(), me.head());
 
-        List<Point> targets = ctx.getBoard().getSnakes()
-                .stream().filter(snake -> !snake.equals(me)).map(GameState.Snake::getHead)
+        List<Point> targets = ctx.gameStateContext().snakes()
+                .stream().filter(snake -> !snake.equals(me)).map(Snake::head)
                 .collect(Collectors.toList());
 
         Point target = Utils.findClosestPoint(targets, d);

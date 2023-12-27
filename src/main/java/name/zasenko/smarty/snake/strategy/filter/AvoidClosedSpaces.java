@@ -1,10 +1,10 @@
 package name.zasenko.smarty.snake.strategy.filter;
 
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.CC;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 
@@ -18,11 +18,11 @@ public class AvoidClosedSpaces implements StrategyFilter {
             return;
         }
 
-        final var head = ctx.getMe().getHead();
-        final var board = ctx.getBoard();
-        final var boardGraph = ctx.getBoardGraph();
+        final var head = ctx.me().head();
+        final var board = ctx.gameStateContext().boardContext();
+        final var boardGraph = ctx.boardGraph();
 
-        CC cc = new CC(boardGraph, ctx.getMe().getHealth());
+        CC cc = new CC(boardGraph, ctx.me().health());
         Integer[] areaSizes = new Integer[possibleMoves.size()];
 
         Set<Integer> expandingClusters = getExpandingClusters(ctx, cc);
@@ -41,11 +41,11 @@ public class AvoidClosedSpaces implements StrategyFilter {
     }
 
     protected Set<Integer> getExpandingClusters(Context ctx, CC cc) {
-        Set<Integer> expandingClusters = new TreeSet<Integer>();
-        for (GameState.Snake snake : ctx.getBoard().getSnakes()) {
+        Set<Integer> expandingClusters = new TreeSet<>();
+        for (Snake snake : ctx.gameStateContext().snakes()) {
             Point tail = snake.tail();
-            expandingClusters.add(cc.id(ctx.getBoard().valueOfPoint(tail)));
-            for (DirectedEdge edge : ctx.getBoardGraph().pointsAround(tail, 1)) {
+            expandingClusters.add(cc.id(ctx.gameStateContext().boardContext().valueOfPoint(tail)));
+            for (DirectedEdge edge : ctx.boardGraph().pointsAround(tail, 1)) {
                 expandingClusters.add(cc.id(edge.getDestination()));
             }
         }

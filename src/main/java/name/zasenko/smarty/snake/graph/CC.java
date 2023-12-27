@@ -52,8 +52,8 @@ public class CC {
 
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        for (int y = 0; y < G.board.getHeight(); y++) {
-            for (int x = 0; x < G.board.getWidth(); x++)
+        for (int y = 0; y < G.board.height(); y++) {
+            for (int x = 0; x < G.board.width(); x++)
                 sb.append(String.format("%3d ", id(G.board.valueOfPoint(new Point(y, x)))));
             sb.append("\n");
         }

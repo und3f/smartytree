@@ -1,9 +1,9 @@
 package name.zasenko.smarty.snake.strategy;
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.graph.LSP;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Utils {
-    public static List<Direction> initDirections(Context context, GameState.Snake snake) {
+    public static List<Direction> initDirections(Context context, Snake snake) {
         Direction forwardDirection = snake.headDirection();
 
         return new ArrayList<>(Arrays.asList(
@@ -22,7 +22,7 @@ public class Utils {
                 forwardDirection.rotateCounterclockwise()));
     }
 
-    public static List<Direction> initPossibleDirections(Context context, GameState.Snake snake) {
+    public static List<Direction> initPossibleDirections(Context context, Snake snake) {
         List<Direction> directions = initDirections(context, snake);
         new AvoidProblems().filterMoves(context, directions);
 
@@ -31,7 +31,7 @@ public class Utils {
 
     public static Direction moveForward(Context context, List<Direction> possibleMoves) {
         if (possibleMoves.size() == 0)
-            return context.getMe().headDirection();
+            return context.me().headDirection();
 
         return possibleMoves.get(0);
     }
@@ -40,7 +40,7 @@ public class Utils {
         if (possibleMoves.size() == 1)
             return moveForward(context, possibleMoves);
 
-        Set<Direction> possibleMovesToTarget = Arrays.stream(context.getMe().getHead().directionTo(target))
+        Set<Direction> possibleMovesToTarget = Arrays.stream(context.me().head().directionTo(target))
                 .distinct()
                 .filter(possibleMoves::contains)
                 .collect(Collectors.toSet());
@@ -57,7 +57,7 @@ public class Utils {
             return moveForward(context, possibleMoves);
         }
 
-        Point nextPoint = context.getBoard().fromValue(path.get(0).getDestination());
+        Point nextPoint = context.gameStateContext().boardContext().fromValue(path.get(0).getDestination());
         return moveTowards(context, possibleMoves, nextPoint);
     }
 
@@ -112,7 +112,7 @@ public class Utils {
     }
 
     public static Direction fillSpace(Context ctx, List<Direction> possibleMoves) {
-        List<DirectedEdge> path = new LSP(ctx.getBoardGraph(), ctx.getMe().getHead()).findLongestPath();
+        List<DirectedEdge> path = new LSP(ctx.boardGraph(), ctx.me().head()).findLongestPath();
         if (path != null) {
             return Utils.moveThruPath(ctx, possibleMoves, path);
         }

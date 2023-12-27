@@ -1,13 +1,12 @@
 package name.zasenko.smarty;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
-import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.GameState;
 import name.zasenko.smarty.snake.strategy.StrategyFactory;
 
 import java.io.IOException;
@@ -28,6 +27,10 @@ public abstract class BaseUnitTestHelper {
     ObjectReader reader = objectMapper.readerFor(new TypeReference<GameState>() {
     });
     return reader.readValue(in);
+  }
+
+  protected Context readContext(String filename) throws IOException {
+    return new Context(readState(filename));
   }
 
   protected InputStream getResource(String resourceFileName) {

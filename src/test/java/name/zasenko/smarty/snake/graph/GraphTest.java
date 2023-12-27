@@ -1,11 +1,11 @@
 package name.zasenko.smarty.snake.graph;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import name.zasenko.smarty.BaseUnitTestHelper;
-import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.context.BoardContext;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.GameState;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -20,10 +20,9 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void TestAdjacentSimple() throws IOException {
-        GameState gameState = this.readState("graph/state1");
-
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
+        Context context = this.readContext("graph/state1");
+        final BoardContext board = context.gameStateContext().boardContext();
+        Graph graph = new Graph(context.gameStateContext());
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(6, 0)), 0);
         List<Integer> expected = Arrays.asList(board.valueOfPoint(new Point(6, 1)));
@@ -32,10 +31,10 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void TestAdjacentFromSnakeHead() throws IOException {
-        GameState gameState = this.readState("graph/state1");
+        var context = this.readContext("graph/state1");
 
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
+        final BoardContext board = context.gameStateContext().boardContext();
+        Graph graph = new Graph(context.gameStateContext());
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(0, 5)), 0);
 
@@ -48,15 +47,14 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void PointUtilsTests() throws IOException {
-        GameState gameState = this.readState("graph/state1");
+        final Context ctx = this.readContext("graph/state1");
+        final BoardContext board = ctx.gameStateContext().boardContext();
+        Graph graph = new Graph(ctx.gameStateContext());
 
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
-
-        List<DirectedEdge> adjanced = graph.adj(gameState.getYou().getHead(), 0);
+        List<DirectedEdge> adjanced = graph.adj(ctx.me().head(), 0);
         assertEquals(2, adjanced.size());
 
-        adjanced = graph.adj(board.movePoint(gameState.getYou().getHead(), Direction.up), 1);
+        adjanced = graph.adj(board.movePoint(ctx.me().head(), Direction.up), 1);
         assertEquals(2, adjanced.size());
 
         int v44 = board.valueOfPoint(new Point(4, 4));
@@ -76,12 +74,12 @@ public class GraphTest extends BaseUnitTestHelper {
 
     @Test
     void PointTTLTest() throws IOException {
-        GameState gameState = this.readState("graph/state2");
+        Context ctx = this.readContext("graph/state2");
 
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
+        final BoardContext board = ctx.gameStateContext().boardContext();
+        Graph graph = new Graph(ctx.gameStateContext());
 
-        final Point head = gameState.getYou().getHead();
+        final Point head = ctx.me().head();
 
         final int headRight = board.valueOfPoint(board.movePoint(head, Direction.right));
         final int headLeft = board.valueOfPoint(board.movePoint(head, Direction.left));
@@ -92,16 +90,16 @@ public class GraphTest extends BaseUnitTestHelper {
         assertEquals(3, cc.componentSize(headRight));
         assertEquals(6, cc.componentSize(headLeft));
 
-        List<Point> body = gameState.getYou().getBody();
+        List<Point> body = ctx.me().body();
         assertTrue(cc.connected(headRight, board.valueOfPoint(body.get(body.size() - 1))));
     }
 
     @Test
     void toStringTest() throws IOException {
         GameState gameState = this.readState("graph/state2");
+        final Context context = new Context(gameState);
 
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
+        Graph graph = new Graph(context.gameStateContext());
         final String str = graph.toString();
 
         assertEquals(this.getResourceContent("output/graph-test2-output.txt"), str);
@@ -112,12 +110,13 @@ public class GraphTest extends BaseUnitTestHelper {
 
         GameState gameState = this.readState("graph/snail");
 
-        final GameState.Board board = gameState.getBoard();
-        Graph graph = new Graph(board);
+        final Context ctx = new Context(gameState);
+        Graph graph = new Graph(ctx.gameStateContext());
 
+        final BoardContext board = ctx.gameStateContext().boardContext();
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(3, 2)), 0);
         int rightPoint = board.valueOfPoint(new Point(3, 3));
         DirectedEdge right = adjacent.stream().filter(edge -> edge.getDestination() == rightPoint).findFirst().get();
-        assertEquals(graph.hazardWeight * 6, right.getWeight(), 0.001f);
+        assertEquals(ctx.gameStateContext().hazardDamage() * 6, right.getWeight(), 0.001f);
     }
 }

@@ -1,12 +1,13 @@
 package name.zasenko.smarty.snake.graph;
 
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.context.GameStateContext;
 
 public class GraphFoodHazard extends Graph {
-    public GraphFoodHazard(Graph G) {
-        super(G.board, G.hazardWeight);
+    public GraphFoodHazard(GameStateContext ctx) {
+        super(ctx.boardContext(), ctx.hazardDamage());
 
-        for (Point p : board.getFood()) {
+        for (Point p : ctx.food()) {
             hazards.put(board.valueOfPoint(p), DEFAULT_HAZARD_WEIGHT);
         }
     }

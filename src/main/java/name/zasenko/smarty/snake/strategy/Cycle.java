@@ -1,15 +1,17 @@
 package name.zasenko.smarty.snake.strategy;
 
-import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.Point;
-import name.zasenko.smarty.snake.graph.*;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.graph.Dijkstra;
+import name.zasenko.smarty.snake.graph.DirectedEdge;
+import name.zasenko.smarty.snake.graph.Graph;
+import name.zasenko.smarty.snake.graph.GraphFoodHazard;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Cycle implements Strategy {
 
@@ -17,12 +19,12 @@ public class Cycle implements Strategy {
 
     @Override
     public Direction findMove(Context ctx) {
-        final var me = ctx.getMe();
+        final var me = ctx.me();
 
-        if (me.getLength() == 0)
+        if (me.length() == 0)
             return Direction.down;
 
-        final var possibleMoves = Utils.initDirections(ctx, ctx.getMe());
+        final var possibleMoves = Utils.initDirections(ctx, ctx.me());
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpaces().filterMoves(ctx, possibleMoves);
@@ -31,32 +33,32 @@ public class Cycle implements Strategy {
             return possibleMoves.get(0);
         }
 
-        final Point head = ctx.getMe().getHead();
-        final Point tail = ctx.getMe().tail();
+        final Point head = ctx.me().head();
+        final Point tail = ctx.me().tail();
 
-        Dijkstra dijkstraHead = new Dijkstra(ctx.getBoardGraph(), head);
-        Point closestFood = Utils.findClosestPoint(ctx.getBoard().getFood(), dijkstraHead);
+        Dijkstra dijkstraHead = new Dijkstra(ctx.boardGraph(), head);
+        Point closestFood = Utils.findClosestPoint(ctx.gameStateContext().food(), dijkstraHead);
 
-        if (ctx.getTurn() > 700)
+        if (ctx.turn() > 700)
             return Utils.fillSpace(ctx, possibleMoves);
 
         int foodReserve = 3;
-        if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.getMe().getHealth()) {
+        if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.me().health()) {
             // System.out.println("Move to food");
             return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
         }
 
         // Do not enter closed without insufficient health
-        final int tailOffset = ctx.getMe().isNextToTail() ? 1 : 0;
-        if (ctx.getBoardGraph().adj(ctx.getMe().tail(tailOffset), 0).size() <= 1) {
-            if (ctx.getMe().getHealth() <= ctx.getMe().getLength()) {
+        final int tailOffset = ctx.me().isNextToTail() ? 1 : 0;
+        if (ctx.boardGraph().adj(ctx.me().tail(tailOffset), 0).size() <= 1) {
+            if (ctx.me().health() <= ctx.me().length()) {
                 // System.out.println("Last chance to eat");
                 return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
             }
         }
 
         // Try to avoid food
-        Graph foodHazard = new GraphFoodHazard(ctx.getBoardGraph());
+        Graph foodHazard = new GraphFoodHazard(ctx.gameStateContext());
         Dijkstra dijkstra = new Dijkstra(foodHazard, head);
 
         if (dijkstra.findDistance(CORNER) != Double.POSITIVE_INFINITY) {
@@ -74,9 +76,9 @@ public class Cycle implements Strategy {
 
     private Direction moveToTail(Context ctx, List<Direction> possibleMoves, Dijkstra dijkstra) {
         // System.out.println("To tail");
-        var aroundTail = ctx.getBoardGraph()
-                .pointsAround(ctx.getMe().tail(1), 0)
-                .stream().map(DirectedEdge::getDestination).collect(Collectors.toList());
+        var aroundTail = ctx.boardGraph()
+                .pointsAround(ctx.me().tail(1), 0)
+                .stream().map(DirectedEdge::getDestination).toList();
 
         if (aroundTail.size() < 1)
             return Utils.randomMove(possibleMoves);

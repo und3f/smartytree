@@ -1,40 +1,38 @@
 package name.zasenko.smarty.snake.strategy.filter;
 
-import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.Snake;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 public class AvoidObstacles implements StrategyFilter {
     @Override
     public void filterMoves(Context ctx, List<Direction> possibleMoves) {
-        final var body = ctx.getMe().getBody();
-        final var board = ctx.getBoard();
+        final var body = ctx.me().body();
+        final var gameCtx = ctx.gameStateContext();
+        final var board = gameCtx.boardContext();
         final var avoider = new Avoider(ctx, possibleMoves);
-        final var me = ctx.getMe();
+        final var me = ctx.me();
 
-        ArrayList<Point> obstacles = new ArrayList<Point>();
-        ArrayList<Point> possibleObstacles = new ArrayList<Point>();
-        obstacles.addAll(body.subList(2, body.size() - 1));
+        ArrayList<Point> possibleObstacles = new ArrayList<>();
+        ArrayList<Point> obstacles = new ArrayList<>(body.subList(2, body.size() - 1));
 
-        if (me.getHealth() == 100)
+        if (me.health() == 100)
             obstacles.add(body.get(body.size() - 1));
 
-        for (Iterator<GameState.Snake> it = board.getSnakes().iterator(); it.hasNext(); ) {
-            GameState.Snake snake = it.next();
+        for (Snake snake : gameCtx.snakes()) {
             if (snake.equals(me))
                 continue;
 
-            if (snake.getLength() >= me.getLength()) {
-                Point enemyHead = snake.getBody().get(0);
+            if (snake.length() >= me.length()) {
+                Point enemyHead = snake.body().get(0);
                 obstacles.add(enemyHead);
 
-                Direction[] directions = snake.getBody().get(1).directionTo(enemyHead);
+                Direction[] directions = snake.body().get(1).directionTo(enemyHead);
                 Direction enemyForwardDirection = Direction.up;
                 if (directions.length > 0)
                     enemyForwardDirection = directions[0];
@@ -50,23 +48,22 @@ public class AvoidObstacles implements StrategyFilter {
                 }
             }
 
-            obstacles.addAll(snake.getBody().subList(1, snake.getBody().size() - 1));
+            obstacles.addAll(snake.body().subList(1, snake.body().size() - 1));
         }
 
-        if (ctx.getHazardDamage() >= ctx.getMe().getHealth()) {
-            obstacles.addAll(ctx.getBoard().getHazards());
+        if (gameCtx.hazardDamage() >= ctx.me().health()) {
+            obstacles.addAll(gameCtx.hazards());
         }
 
 
-        for (Iterator<Point> it = obstacles.iterator(); it.hasNext(); ) {
-            avoider.avoidObstacle(it.next());
+        for (Point point : obstacles) {
+            avoider.avoidObstacle(point);
         }
 
-        for (Iterator<Point> it = possibleObstacles.iterator(); it.hasNext(); ) {
+        for (Point possibleObstacle : possibleObstacles) {
             if (possibleMoves.size() <= 1)
                 break;
-            Point obstacle = it.next();
-            avoider.avoidObstacle(obstacle);
+            avoider.avoidObstacle(possibleObstacle);
         }
     }
 
@@ -75,7 +72,7 @@ public class AvoidObstacles implements StrategyFilter {
         final List<Direction> possibleMoves;
 
         public Avoider(Context ctx, List<Direction> possibleMoves) {
-            this.head = ctx.getMe().getHead();
+            this.head = ctx.me().head();
             this.possibleMoves = possibleMoves;
         }
 

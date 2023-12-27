@@ -10,8 +10,9 @@ import jakarta.json.Json;
 import jakarta.json.JsonBuilderFactory;
 import jakarta.json.JsonException;
 import jakarta.json.JsonObject;
-import name.zasenko.smarty.snake.Context;
-import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.GameState;
+import name.zasenko.smarty.snake.entities.Ruleset;
 import name.zasenko.smarty.snake.strategy.Constrictor;
 import name.zasenko.smarty.snake.strategy.Fill;
 import name.zasenko.smarty.snake.strategy.Strategy;
@@ -102,9 +103,9 @@ public class SnakeService implements Service {
     }
 
     private void performTurn(GameState gameState, ServerResponse response) {
-        Strategy strategy = getStrategyForRuleset(gameState.getGame().getRuleset().getName());
+        Strategy strategy = getStrategyForRuleset(gameState.game().ruleset().name());
 
-        LOGGER.log(Level.INFO, "Turn #{0}", gameState.getTurn());
+        LOGGER.log(Level.INFO, "Turn #{0}", gameState.turn());
         // LOGGER.log(Level.INFO, "Strategy #{0}", strategy.toString());
 
         final String move = new Context(gameState).findMove(strategy).toString();
@@ -126,10 +127,10 @@ public class SnakeService implements Service {
 
     private Strategy getStrategyForRuleset(String ruleset) {
         switch (ruleset) {
-            case GameState.Ruleset.CONSTRICTOR:
-            case GameState.Ruleset.WRAPPED_CONSTRICTOR:
+            case Ruleset.CONSTRICTOR:
+            case Ruleset.WRAPPED_CONSTRICTOR:
                 return new Constrictor();
-            case GameState.Ruleset.SOLO:
+            case Ruleset.SOLO:
                 return new Fill();
             default:
                 return defaultStrategy;

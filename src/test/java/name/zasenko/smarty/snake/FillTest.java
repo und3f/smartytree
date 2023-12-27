@@ -1,6 +1,8 @@
 package name.zasenko.smarty.snake;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.GameState;
 import name.zasenko.smarty.snake.strategy.Fill;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

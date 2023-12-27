@@ -1,19 +1,24 @@
 package name.zasenko.smarty.snake;
 
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Point implements Comparable<Point> {
-    @Getter
-    @Setter
-    private int x, y;
+    private final int x, y;
 
-    Point() {
-    }
-
-    public Point(int y, int x) {
+    public Point(
+            @JsonProperty("y") int y,
+            @JsonProperty("x") int x
+    ) {
         this.x = x;
         this.y = y;
+    }
+
+    public int x() {
+        return x;
+    }
+
+    public int y() {
+        return y;
     }
 
     public int manhattanTo(Point to) {
@@ -46,8 +51,7 @@ public class Point implements Comparable<Point> {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj instanceof Point) {
-            final Point p2 = (Point) obj;
+        if (obj instanceof Point p2) {
             return this.x == p2.x && this.y == p2.y;
         }
 

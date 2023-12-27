@@ -1,8 +1,9 @@
 package name.zasenko.smarty.snake.strategy;
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.BoardContext;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.CC;
 import name.zasenko.smarty.snake.strategy.filter.AreaControl;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
@@ -31,13 +32,13 @@ public class Constrictor implements Strategy {
     }
 
     public boolean isSnakeAlone(Context ctx) {
-        GameState.Snake me = ctx.getMe();
+        Snake me = ctx.me();
         // TODO cache CC computation
-        CC cc = new CC(ctx.getBoardGraph(), ctx.getMe().getHealth());
+        CC cc = new CC(ctx.boardGraph(), ctx.me().health());
 
         Set<Integer> clusters = getSnakeClustersStream(ctx, me, cc).collect(Collectors.toSet());
 
-        for (GameState.Snake snake : ctx.getBoard().getSnakes()) {
+        for (Snake snake : ctx.gameStateContext().snakes()) {
             if (snake.equals(me))
                 continue;
 
@@ -49,17 +50,17 @@ public class Constrictor implements Strategy {
     }
 
     private List<Direction> initConstrictorModePossibleMoves(Context ctx) {
-        List<Direction> possibleMoves = initDirections(ctx, ctx.getMe());
+        List<Direction> possibleMoves = initDirections(ctx, ctx.me());
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpacesWithoutExpansion().filterMoves(ctx, possibleMoves);
         return possibleMoves;
     }
 
-    private Stream<Integer> getSnakeClustersStream(Context ctx, GameState.Snake snake, CC cc) {
-        GameState.Board board = ctx.getBoard();
+    private Stream<Integer> getSnakeClustersStream(Context ctx, Snake snake, CC cc) {
+        BoardContext board = ctx.gameStateContext().boardContext();
         return Utils.initDirections(ctx, snake).stream()
-                .map(d -> board.movePoint(snake.getHead(), d))
+                .map(d -> board.movePoint(snake.head(), d))
                 .filter(Objects::nonNull)
                 .map(p -> cc.id(board.valueOfPoint(p)));
     }

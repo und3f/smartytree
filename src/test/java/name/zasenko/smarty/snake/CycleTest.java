@@ -1,7 +1,8 @@
 package name.zasenko.smarty.snake;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import name.zasenko.smarty.BaseUnitTestHelper;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.entities.GameState;
 import name.zasenko.smarty.snake.strategy.Cycle;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;

@@ -1,9 +1,9 @@
 package name.zasenko.smarty.minmax;
 
 import lombok.Getter;
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.Graph;
 import name.zasenko.smarty.snake.strategy.Utils;
 
@@ -17,12 +17,14 @@ public class MinMax {
 
     }
 
-    private void findSnakeMove(Context context, GameState.Snake snake) {
-        Context localContext = new Context(context.getBoard(), snake, 0, Graph.DEFAULT_HAZARD_WEIGHT);
+    private void findSnakeMove(Context ctx, Snake snake) {
+        Context localContext = new Context(
+                ctx.gameStateContext(), snake, 0, Graph.DEFAULT_HAZARD_WEIGHT
+        );
         List<Direction> moves = Utils.initPossibleDirections(localContext, snake);
     }
 
-    static double calculateScore(Context context, GameState.Snake me, GameState.Snake opponent) {
+    static double calculateScore(Context context, Snake me, Snake opponent) {
         if (Utils.initPossibleDirections(context, me).size() == 0) {
             return Double.NEGATIVE_INFINITY;
         }
@@ -31,7 +33,7 @@ public class MinMax {
             return Double.POSITIVE_INFINITY;
         }
 
-        return (me.getLength() - opponent.getLength()) * LENGTH_MULTIPLIER;
+        return (me.length() - opponent.length()) * LENGTH_MULTIPLIER;
     }
 
     static class DirectionPriority implements Comparable<DirectionPriority> {

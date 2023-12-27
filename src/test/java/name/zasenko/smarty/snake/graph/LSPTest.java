@@ -13,9 +13,9 @@ public class LSPTest extends BaseUnitTestHelper {
 
     @Test
     void testLongestSimplePath() throws IOException {
-        var gameState = this.readState("findfood/closed");
-        var graph = new Graph(gameState.getBoard());
-        LSP lsp = new LSP(graph, gameState.getYou().getHead());
+        var context = this.readContext("findfood/closed");
+        var graph = new Graph(context.gameStateContext());
+        LSP lsp = new LSP(graph, context.me().head());
         final List<DirectedEdge> path = lsp.findLongestPath();
 
         assertNotNull(path);
@@ -24,9 +24,9 @@ public class LSPTest extends BaseUnitTestHelper {
 
     @Test
     void testLongestSimplePath2() throws IOException {
-        var gameState = this.readState("fill/simple-fill");
-        var graph = new Graph(gameState.getBoard());
-        LSP lsp = new LSP(graph, gameState.getYou().getHead());
+        var context = this.readContext("fill/simple-fill");
+        var graph = new Graph(context.gameStateContext());
+        LSP lsp = new LSP(graph, context.me().head());
         final List<DirectedEdge> path = lsp.findLongestPath();
 
         assertNotNull(path);

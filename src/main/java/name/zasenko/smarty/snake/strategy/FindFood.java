@@ -1,9 +1,9 @@
 package name.zasenko.smarty.snake.strategy;
 
-import name.zasenko.smarty.snake.Context;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.GameState;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 
@@ -15,9 +15,10 @@ import java.util.stream.Collectors;
 public class FindFood implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
-        final var board = ctx.getBoard();
+        final var gameCtx = ctx.gameStateContext();
+        final var board = gameCtx.boardContext();
 
-        GameState.Snake me = ctx.getMe();
+        Snake me = ctx.me();
         final var possibleMoves = Utils.initPossibleDirections(ctx, me);
 
 
@@ -25,25 +26,25 @@ public class FindFood implements Strategy {
             return Utils.moveForward(ctx, possibleMoves);
         }
 
-        Dijkstra dijkstra = new Dijkstra(ctx.getBoardGraph(), me.getHead());
+        Dijkstra dijkstra = new Dijkstra(ctx.boardGraph(), me.head());
 
-        List<Point> targets = new ArrayList<Point>(board.getFood());
+        List<Point> targets = new ArrayList<Point>(gameCtx.food());
 
-        targets.addAll(ctx.getBoard().getSnakes()
-                .stream().filter(snake -> snake.getLength() < me.getLength())
-                .map(GameState.Snake::head)
+        targets.addAll(gameCtx.snakes()
+                .stream().filter(snake -> snake.length() < me.length())
+                .map(Snake::head)
                 .collect(Collectors.toList())
         );
 
         Point closestTarget = Utils.findClosestPoint(targets, dijkstra);
 
         List<DirectedEdge> path = dijkstra.findPath(closestTarget);
-        if (path == null || dijkstra.findDistance(closestTarget) > me.getHealth()) {
+        if (path == null || dijkstra.findDistance(closestTarget) > me.health()) {
             closestTarget = me.tail();
             path = dijkstra.findPath(closestTarget);
         }
 
-        if (path == null || dijkstra.findDistance(closestTarget) > me.getHealth()) {
+        if (path == null || dijkstra.findDistance(closestTarget) > me.health()) {
             targets = possibleMoves.stream()
                     .map(direction -> board.movePoint(me.head(), direction))
                     .filter(Objects::nonNull)

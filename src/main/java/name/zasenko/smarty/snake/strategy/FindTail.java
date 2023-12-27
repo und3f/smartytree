@@ -1,8 +1,8 @@
 package name.zasenko.smarty.snake.strategy;
 
-import name.zasenko.smarty.snake.Context;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.Point;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
@@ -15,13 +15,13 @@ public class FindTail implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         Direction towardsTail = moveToTail(ctx);
-        if (ctx.getMe().getHealth() >= MinHealth)
+        if (ctx.me().health() >= MinHealth)
             return towardsTail;
         else {
             // Move towards food
-            final var board = ctx.getBoard();
-            final var food = board.getFood();
-            final var head = ctx.getMe().getHead();
+            final var board = ctx.gameStateContext().boardContext();
+            final var food = ctx.gameStateContext().food();
+            final var head = ctx.me().head();
 
             return Stream.of(towardsTail, towardsTail.rotateClockwise(), towardsTail.rotateCounterclockwise())
                     .filter(direction -> food.contains(board.movePoint(head, direction)))
@@ -31,9 +31,9 @@ public class FindTail implements Strategy {
     }
 
     private Direction moveToTail(Context ctx) {
-        final var head = ctx.getMe().getHead();
-        var possibleMoves = Utils.initDirections(ctx, ctx.getMe());
-        final var body = ctx.getMe().getBody();
+        final var head = ctx.me().head();
+        var possibleMoves = Utils.initDirections(ctx, ctx.me());
+        final var body = ctx.me().body();
         final Point tail = body.get(body.size() - 1);
 
         new AvoidBorders().filterMoves(ctx, possibleMoves);
