@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
     <groupId>name.zasenko.smarty</groupId>
-    <artifactId>smarttree</artifactId>
+    <artifactId>smartytree</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>smartytree</name>
 

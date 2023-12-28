@@ -1,0 +1,14 @@
+[Unit]
+Description=Smarty Tree battlesnake service
+After=syslog.target network-online.target
+
+[Service]
+User=nobody
+Group=nobody
+
+Type=simple
+WorkingDirectory=/opt/smartytree
+ExecStart=/usr/bin/java -jar /home/opc/smartytree.jar
+
+[Install]
+WantedBy=network-online.target
