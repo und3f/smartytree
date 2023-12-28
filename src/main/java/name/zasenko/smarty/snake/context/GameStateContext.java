@@ -7,7 +7,7 @@ import name.zasenko.smarty.snake.entities.Snake;
 import java.util.List;
 
 public record GameStateContext(
-        BoardContext boardContext,
+        Snake me,
         List<Snake> snakes,
         List<Point> food,
         List<Point> hazards,
@@ -16,12 +16,11 @@ public record GameStateContext(
 
     public GameStateContext(GameState gameState) {
         this(
-                BoardContextFactory.createBoard(gameState),
+                gameState.you(),
                 gameState.board().snakes(),
                 gameState.board().food(),
                 gameState.board().hazards(),
                 gameState.game().ruleset().settings().hazardDamagePerTurn()
         );
     }
-
 }

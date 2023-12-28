@@ -2,33 +2,28 @@ package name.zasenko.smarty.snake.context;
 
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.entities.GameState;
-import name.zasenko.smarty.snake.entities.Snake;
 import name.zasenko.smarty.snake.graph.Graph;
 import name.zasenko.smarty.snake.strategy.Strategy;
 
 public class Context {
+    private final BoardContext boardContext;
     private final GameStateContext gameStateContext;
-
-    private final Snake me;
-
     private final Graph boardGraph;
-
     private final int turn;
 
-    public Context(GameStateContext gameStateContext, Snake me, int turn, double hazardDamage) {
+    public Context(BoardContext boardContext, GameStateContext gameStateContext, int turn) {
+        this.boardContext = boardContext;
         this.gameStateContext = gameStateContext;
-        this.me = me;
         this.turn = turn;
 
-        this.boardGraph = Graph.createGenericGameGraph(gameStateContext);
+        this.boardGraph = Graph.createGenericGameGraph(this);
     }
 
     public Context(GameState gameState) {
         this(
+                BoardContextFactory.createBoard(gameState),
                 new GameStateContext(gameState),
-                gameState.you(),
-                gameState.turn(),
-                gameState.game().ruleset().settings().hazardDamagePerTurn()
+                gameState.turn()
         );
     }
 
@@ -36,12 +31,12 @@ public class Context {
         return strategy.findMove(this);
     }
 
-    public GameStateContext gameStateContext() {
+    public GameStateContext state() {
         return gameStateContext;
     }
 
-    public Snake me() {
-        return me;
+    public BoardContext board() {
+        return boardContext;
     }
 
     public Graph boardGraph() {

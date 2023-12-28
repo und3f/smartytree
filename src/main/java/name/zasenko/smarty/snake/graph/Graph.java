@@ -3,7 +3,7 @@ package name.zasenko.smarty.snake.graph;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.Point;
 import name.zasenko.smarty.snake.context.BoardContext;
-import name.zasenko.smarty.snake.context.GameStateContext;
+import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.entities.Snake;
 
 import java.util.List;
@@ -28,8 +28,9 @@ public class Graph {
         hazards = new TreeMap<>();
     }
 
-    public static Graph createGenericGameGraph(GameStateContext gameStateContext) {
-        var graph = new Graph(gameStateContext.boardContext(), gameStateContext.hazardDamage());
+    public static Graph createGenericGameGraph(Context context) {
+        var gameStateContext = context.state();
+        var graph = new Graph(context.board(), gameStateContext.hazardDamage());
 
         for (Snake snake : gameStateContext.snakes()) {
             int ttl = 0;
@@ -53,10 +54,10 @@ public class Graph {
         return graph;
     }
 
-    public static Graph createFoodHazardGraph(GameStateContext ctx) {
-        Graph graph = new Graph(ctx.boardContext(), ctx.hazardDamage());
+    public static Graph createFoodHazardGraph(Context ctx) {
+        Graph graph = new Graph(ctx.board(), ctx.state().hazardDamage());
 
-        for (Point p : ctx.food()) {
+        for (Point p : ctx.state().food()) {
             graph.hazards.put(graph.board.valueOfPoint(p), DEFAULT_HAZARD_WEIGHT);
         }
 

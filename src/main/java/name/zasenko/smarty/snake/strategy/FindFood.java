@@ -15,10 +15,10 @@ import java.util.stream.Collectors;
 public class FindFood implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
-        final var gameCtx = ctx.gameStateContext();
-        final var board = gameCtx.boardContext();
+        final var gameCtx = ctx.state();
+        final var board = ctx.board();
 
-        Snake me = ctx.me();
+        Snake me = gameCtx.me();
         final var possibleMoves = Utils.initPossibleDirections(ctx, me);
 
 

@@ -1,10 +1,10 @@
 package name.zasenko.smarty.minmax;
 
 import lombok.Getter;
-import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.Direction;
+import name.zasenko.smarty.snake.context.Context;
+import name.zasenko.smarty.snake.context.GameStateContext;
 import name.zasenko.smarty.snake.entities.Snake;
-import name.zasenko.smarty.snake.graph.Graph;
 import name.zasenko.smarty.snake.strategy.Utils;
 
 import java.util.List;
@@ -18,9 +18,14 @@ public class MinMax {
     }
 
     private void findSnakeMove(Context ctx, Snake snake) {
-        Context localContext = new Context(
-                ctx.gameStateContext(), snake, 0, Graph.DEFAULT_HAZARD_WEIGHT
+        GameStateContext gameStateContext = new GameStateContext(
+                snake,
+                ctx.state().snakes(),
+                ctx.state().food(),
+                ctx.state().hazards(),
+                ctx.state().hazardDamage()
         );
+        Context localContext = new Context(ctx.board(), gameStateContext, ctx.turn() );
         List<Direction> moves = Utils.initPossibleDirections(localContext, snake);
     }
 

@@ -31,7 +31,7 @@ public class Utils {
 
     public static Direction moveForward(Context context, List<Direction> possibleMoves) {
         if (possibleMoves.size() == 0)
-            return context.me().headDirection();
+            return context.state().me().headDirection();
 
         return possibleMoves.get(0);
     }
@@ -40,7 +40,7 @@ public class Utils {
         if (possibleMoves.size() == 1)
             return moveForward(context, possibleMoves);
 
-        Set<Direction> possibleMovesToTarget = Arrays.stream(context.me().head().directionTo(target))
+        Set<Direction> possibleMovesToTarget = Arrays.stream(context.state().me().head().directionTo(target))
                 .distinct()
                 .filter(possibleMoves::contains)
                 .collect(Collectors.toSet());
@@ -57,7 +57,7 @@ public class Utils {
             return moveForward(context, possibleMoves);
         }
 
-        Point nextPoint = context.gameStateContext().boardContext().fromValue(path.get(0).getDestination());
+        Point nextPoint = context.board().fromValue(path.get(0).getDestination());
         return moveTowards(context, possibleMoves, nextPoint);
     }
 
@@ -112,7 +112,7 @@ public class Utils {
     }
 
     public static Direction fillSpace(Context ctx, List<Direction> possibleMoves) {
-        List<DirectedEdge> path = new LSP(ctx.boardGraph(), ctx.me().head()).findLongestPath();
+        List<DirectedEdge> path = new LSP(ctx.boardGraph(), ctx.state().me().head()).findLongestPath();
         if (path != null) {
             return Utils.moveThruPath(ctx, possibleMoves, path);
         }

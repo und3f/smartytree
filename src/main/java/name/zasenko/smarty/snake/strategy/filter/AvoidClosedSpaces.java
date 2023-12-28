@@ -18,11 +18,11 @@ public class AvoidClosedSpaces implements StrategyFilter {
             return;
         }
 
-        final var head = ctx.me().head();
-        final var board = ctx.gameStateContext().boardContext();
+        final var head = ctx.state().me().head();
+        final var board = ctx.board();
         final var boardGraph = ctx.boardGraph();
 
-        CC cc = new CC(boardGraph, ctx.me().health());
+        CC cc = new CC(boardGraph, ctx.state().me().health());
         Integer[] areaSizes = new Integer[possibleMoves.size()];
 
         Set<Integer> expandingClusters = getExpandingClusters(ctx, cc);
@@ -42,9 +42,9 @@ public class AvoidClosedSpaces implements StrategyFilter {
 
     protected Set<Integer> getExpandingClusters(Context ctx, CC cc) {
         Set<Integer> expandingClusters = new TreeSet<>();
-        for (Snake snake : ctx.gameStateContext().snakes()) {
+        for (Snake snake : ctx.state().snakes()) {
             Point tail = snake.tail();
-            expandingClusters.add(cc.id(ctx.gameStateContext().boardContext().valueOfPoint(tail)));
+            expandingClusters.add(cc.id(ctx.board().valueOfPoint(tail)));
             for (DirectedEdge edge : ctx.boardGraph().pointsAround(tail, 1)) {
                 expandingClusters.add(cc.id(edge.getDestination()));
             }

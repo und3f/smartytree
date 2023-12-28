@@ -12,11 +12,11 @@ import java.util.List;
 public class AvoidObstacles implements StrategyFilter {
     @Override
     public void filterMoves(Context ctx, List<Direction> possibleMoves) {
-        final var body = ctx.me().body();
-        final var gameCtx = ctx.gameStateContext();
-        final var board = gameCtx.boardContext();
+        final var state = ctx.state();
+        final var board = ctx.board();
+        final var me = state.me();
+        final var body = me.body();
         final var avoider = new Avoider(ctx, possibleMoves);
-        final var me = ctx.me();
 
         ArrayList<Point> possibleObstacles = new ArrayList<>();
         ArrayList<Point> obstacles = new ArrayList<>(body.subList(2, body.size() - 1));
@@ -24,7 +24,7 @@ public class AvoidObstacles implements StrategyFilter {
         if (me.health() == 100)
             obstacles.add(body.get(body.size() - 1));
 
-        for (Snake snake : gameCtx.snakes()) {
+        for (Snake snake : state.snakes()) {
             if (snake.equals(me))
                 continue;
 
@@ -51,8 +51,8 @@ public class AvoidObstacles implements StrategyFilter {
             obstacles.addAll(snake.body().subList(1, snake.body().size() - 1));
         }
 
-        if (gameCtx.hazardDamage() >= ctx.me().health()) {
-            obstacles.addAll(gameCtx.hazards());
+        if (state.hazardDamage() >= me.health()) {
+            obstacles.addAll(state.hazards());
         }
 
 
@@ -72,7 +72,7 @@ public class AvoidObstacles implements StrategyFilter {
         final List<Direction> possibleMoves;
 
         public Avoider(Context ctx, List<Direction> possibleMoves) {
-            this.head = ctx.me().head();
+            this.head = ctx.state().me().head();
             this.possibleMoves = possibleMoves;
         }
 

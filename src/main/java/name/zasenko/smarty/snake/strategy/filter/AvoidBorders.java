@@ -8,8 +8,8 @@ import java.util.List;
 public class AvoidBorders implements StrategyFilter {
     @Override
     public void filterMoves(Context ctx, List<Direction> possibleMoves) {
-        final var board = ctx.gameStateContext().boardContext();
-        final var head = ctx.me().head();
+        final var board = ctx.board();
+        final var head = ctx.state().me().head();
 
         for (var it = possibleMoves.listIterator(); it.hasNext(); ) {
             if (board.movePoint(head, it.next()) == null) {

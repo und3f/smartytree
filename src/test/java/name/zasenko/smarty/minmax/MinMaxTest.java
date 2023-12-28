@@ -16,8 +16,8 @@ public class MinMaxTest extends BaseUnitTestHelper {
     void ScoreTests() throws IOException {
         Context context = this.readContext("sample-state");
 
-        var me = context.me();
-        var opponent  = context.gameStateContext().snakes()
+        var me = context.state().me();
+        var opponent  = context.state().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());
@@ -29,8 +29,8 @@ public class MinMaxTest extends BaseUnitTestHelper {
     void WinScoreTests() throws IOException {
         Context context = this.readContext("minmax/win");
 
-        var me = context.me();
-        var opponent = context.gameStateContext().snakes()
+        var me = context.state().me();
+        var opponent = context.state().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());
@@ -43,8 +43,8 @@ public class MinMaxTest extends BaseUnitTestHelper {
     void LastMoveScoreTest() throws IOException {
         Context context = this.readContext("minmax/last-move");
 
-        var me = context.me();
-        var opponent = context.gameStateContext().snakes()
+        var me = context.state().me();
+        var opponent = context.state().snakes()
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());

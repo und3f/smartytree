@@ -18,12 +18,12 @@ public class Cycle implements Strategy {
 
     @Override
     public Direction findMove(Context ctx) {
-        final var me = ctx.me();
+        final var me = ctx.state().me();
 
         if (me.length() == 0)
             return Direction.down;
 
-        final var possibleMoves = Utils.initDirections(ctx, ctx.me());
+        final var possibleMoves = Utils.initDirections(ctx, me);
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpaces().filterMoves(ctx, possibleMoves);
@@ -32,32 +32,32 @@ public class Cycle implements Strategy {
             return possibleMoves.get(0);
         }
 
-        final Point head = ctx.me().head();
-        final Point tail = ctx.me().tail();
+        final Point head = me.head();
+        final Point tail = me.tail();
 
         Dijkstra dijkstraHead = new Dijkstra(ctx.boardGraph(), head);
-        Point closestFood = Utils.findClosestPoint(ctx.gameStateContext().food(), dijkstraHead);
+        Point closestFood = Utils.findClosestPoint(ctx.state().food(), dijkstraHead);
 
         if (ctx.turn() > 700)
             return Utils.fillSpace(ctx, possibleMoves);
 
         int foodReserve = 3;
-        if (dijkstraHead.findDistance(closestFood) + foodReserve > ctx.me().health()) {
+        if (dijkstraHead.findDistance(closestFood) + foodReserve > me.health()) {
             // System.out.println("Move to food");
             return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
         }
 
         // Do not enter closed without insufficient health
-        final int tailOffset = ctx.me().isNextToTail() ? 1 : 0;
-        if (ctx.boardGraph().adj(ctx.me().tail(tailOffset), 0).size() <= 1) {
-            if (ctx.me().health() <= ctx.me().length()) {
+        final int tailOffset = me.isNextToTail() ? 1 : 0;
+        if (ctx.boardGraph().adj(me.tail(tailOffset), 0).size() <= 1) {
+            if (me.health() <= me.length()) {
                 // System.out.println("Last chance to eat");
                 return Utils.moveThruPath(ctx, possibleMoves, dijkstraHead.findPath(closestFood));
             }
         }
 
         // Try to avoid food
-        Graph foodHazard = Graph.createFoodHazardGraph(ctx.gameStateContext());
+        Graph foodHazard = Graph.createFoodHazardGraph(ctx);
         Dijkstra dijkstra = new Dijkstra(foodHazard, head);
 
         if (dijkstra.findDistance(CORNER) != Double.POSITIVE_INFINITY) {
@@ -76,7 +76,7 @@ public class Cycle implements Strategy {
     private Direction moveToTail(Context ctx, List<Direction> possibleMoves, Dijkstra dijkstra) {
         // System.out.println("To tail");
         var aroundTail = ctx.boardGraph()
-                .pointsAround(ctx.me().tail(1), 0)
+                .pointsAround(ctx.state().me().tail(1), 0)
                 .stream().map(DirectedEdge::getDestination).toList();
 
         if (aroundTail.size() < 1)

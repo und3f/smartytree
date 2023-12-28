@@ -21,8 +21,8 @@ public class GraphTest extends BaseUnitTestHelper {
     @Test
     void TestAdjacentSimple() throws IOException {
         Context context = this.readContext("graph/state1");
-        final BoardContext board = context.gameStateContext().boardContext();
-        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
+        final BoardContext board = context.board();
+        Graph graph = Graph.createGenericGameGraph(context);
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(6, 0)), 0);
         List<Integer> expected = Arrays.asList(board.valueOfPoint(new Point(6, 1)));
@@ -33,8 +33,8 @@ public class GraphTest extends BaseUnitTestHelper {
     void TestAdjacentFromSnakeHead() throws IOException {
         var context = this.readContext("graph/state1");
 
-        final BoardContext board = context.gameStateContext().boardContext();
-        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
+        final BoardContext board = context.board();
+        Graph graph = Graph.createGenericGameGraph(context);
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(0, 5)), 0);
 
@@ -48,13 +48,13 @@ public class GraphTest extends BaseUnitTestHelper {
     @Test
     void PointUtilsTests() throws IOException {
         final Context ctx = this.readContext("graph/state1");
-        final BoardContext board = ctx.gameStateContext().boardContext();
-        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
+        final BoardContext board = ctx.board();
+        Graph graph = Graph.createGenericGameGraph(ctx);
 
-        List<DirectedEdge> adjanced = graph.adj(ctx.me().head(), 0);
+        List<DirectedEdge> adjanced = graph.adj(ctx.state().me().head(), 0);
         assertEquals(2, adjanced.size());
 
-        adjanced = graph.adj(board.movePoint(ctx.me().head(), Direction.up), 1);
+        adjanced = graph.adj(board.movePoint(ctx.state().me().head(), Direction.up), 1);
         assertEquals(2, adjanced.size());
 
         int v44 = board.valueOfPoint(new Point(4, 4));
@@ -76,10 +76,10 @@ public class GraphTest extends BaseUnitTestHelper {
     void PointTTLTest() throws IOException {
         Context ctx = this.readContext("graph/state2");
 
-        final BoardContext board = ctx.gameStateContext().boardContext();
-        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
+        final BoardContext board = ctx.board();
+        Graph graph = Graph.createGenericGameGraph(ctx);
 
-        final Point head = ctx.me().head();
+        final Point head = ctx.state().me().head();
 
         final int headRight = board.valueOfPoint(board.movePoint(head, Direction.right));
         final int headLeft = board.valueOfPoint(board.movePoint(head, Direction.left));
@@ -90,7 +90,7 @@ public class GraphTest extends BaseUnitTestHelper {
         assertEquals(3, cc.componentSize(headRight));
         assertEquals(6, cc.componentSize(headLeft));
 
-        List<Point> body = ctx.me().body();
+        List<Point> body = ctx.state().me().body();
         assertTrue(cc.connected(headRight, board.valueOfPoint(body.get(body.size() - 1))));
     }
 
@@ -99,7 +99,7 @@ public class GraphTest extends BaseUnitTestHelper {
         GameState gameState = this.readState("graph/state2");
         final Context context = new Context(gameState);
 
-        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(context);
         final String str = graph.toString();
 
         assertEquals(this.getResourceContent("output/graph-test2-output.txt"), str);
@@ -111,12 +111,12 @@ public class GraphTest extends BaseUnitTestHelper {
         GameState gameState = this.readState("graph/snail");
 
         final Context ctx = new Context(gameState);
-        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(ctx);
 
-        final BoardContext board = ctx.gameStateContext().boardContext();
+        final BoardContext board = ctx.board();
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(3, 2)), 0);
         int rightPoint = board.valueOfPoint(new Point(3, 3));
         DirectedEdge right = adjacent.stream().filter(edge -> edge.getDestination() == rightPoint).findFirst().get();
-        assertEquals(ctx.gameStateContext().hazardDamage() * 6, right.getWeight(), 0.001f);
+        assertEquals(ctx.state().hazardDamage() * 6, right.getWeight(), 0.001f);
     }
 }

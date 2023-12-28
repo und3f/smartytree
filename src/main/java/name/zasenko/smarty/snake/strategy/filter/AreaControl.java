@@ -17,10 +17,10 @@ public class AreaControl implements StrategyFilter {
         if (possibleMoves.size() <= 1)
             return;
 
-        Snake me = ctx.me();
+        Snake me = ctx.state().me();
         Dijkstra d = new Dijkstra(ctx.boardGraph(), me.head());
 
-        List<Point> targets = ctx.gameStateContext().snakes()
+        List<Point> targets = ctx.state().snakes()
                 .stream().filter(snake -> !snake.equals(me)).map(Snake::head)
                 .collect(Collectors.toList());
 

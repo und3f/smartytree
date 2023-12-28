@@ -32,13 +32,13 @@ public class Constrictor implements Strategy {
     }
 
     public boolean isSnakeAlone(Context ctx) {
-        Snake me = ctx.me();
+        Snake me = ctx.state().me();
         // TODO cache CC computation
-        CC cc = new CC(ctx.boardGraph(), ctx.me().health());
+        CC cc = new CC(ctx.boardGraph(), me.health());
 
         Set<Integer> clusters = getSnakeClustersStream(ctx, me, cc).collect(Collectors.toSet());
 
-        for (Snake snake : ctx.gameStateContext().snakes()) {
+        for (Snake snake : ctx.state().snakes()) {
             if (snake.equals(me))
                 continue;
 
@@ -50,7 +50,7 @@ public class Constrictor implements Strategy {
     }
 
     private List<Direction> initConstrictorModePossibleMoves(Context ctx) {
-        List<Direction> possibleMoves = initDirections(ctx, ctx.me());
+        List<Direction> possibleMoves = initDirections(ctx, ctx.state().me());
         new AvoidBorders().filterMoves(ctx, possibleMoves);
         new AvoidObstacles().filterMoves(ctx, possibleMoves);
         new AvoidClosedSpacesWithoutExpansion().filterMoves(ctx, possibleMoves);
@@ -58,7 +58,7 @@ public class Constrictor implements Strategy {
     }
 
     private Stream<Integer> getSnakeClustersStream(Context ctx, Snake snake, CC cc) {
-        BoardContext board = ctx.gameStateContext().boardContext();
+        BoardContext board = ctx.board();
         return Utils.initDirections(ctx, snake).stream()
                 .map(d -> board.movePoint(snake.head(), d))
                 .filter(Objects::nonNull)
