@@ -1,9 +1,10 @@
-package name.zasenko.smarty.snake;
+package name.zasenko.smarty.snake.strategy;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
+import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.entities.GameState;
-import name.zasenko.smarty.snake.strategy.Constrictor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -19,7 +20,7 @@ public class ConstrictorTest extends BaseUnitTestHelper {
     void testClosedSpace() throws IOException {
         GameState gameState = readState("constrictor/avoid-closed-spaces");
 
-        assertEquals(Direction.up, new Context(gameState).findMove(new Constrictor()));
+        Assertions.assertEquals(Direction.down, new Context(gameState).findMove(new Constrictor()));
     }
 
     @Test

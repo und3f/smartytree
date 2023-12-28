@@ -1,9 +1,11 @@
-package name.zasenko.smarty.snake;
+package name.zasenko.smarty.snake.strategy;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
+import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.entities.GameState;
 import name.zasenko.smarty.snake.strategy.Cycle;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +20,7 @@ public class CycleTest extends BaseUnitTestHelper {
   void MoveDecisionAvoidSelf() throws IOException {
     GameState gameState = readState("cycle/avoid-tail-test");
 
-    assertNotEquals(Direction.left, new Context(gameState).findMove(new Cycle()));
+    Assertions.assertNotEquals(Direction.left, new Context(gameState).findMove(new Cycle()));
   }
 
   @Test
