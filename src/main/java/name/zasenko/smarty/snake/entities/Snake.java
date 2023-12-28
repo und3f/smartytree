@@ -1,5 +1,6 @@
 package name.zasenko.smarty.snake.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.Point;
 
@@ -43,10 +44,12 @@ public record Snake(
         return this.body.get(this.body.size() - 1 - offset);
     }
 
+    @JsonIgnore
     public boolean isNextToTail() {
         return head().manhattanTo(tail()) == 1;
     }
 
+    @JsonIgnore
     public boolean isExpanding() {
         return tail(1).equals(tail());
     }

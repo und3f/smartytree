@@ -21,7 +21,7 @@ public class MinMaxTest extends BaseUnitTestHelper {
                 .stream().filter(s -> !s.equals(me)).findFirst();
 
         assertTrue(opponent.isPresent());
-        assertTrue(MinMax.calculateScore(context, me, opponent.get()) < 0);
+        assertTrue(MinMax.calculateScore(context, me, opponent.get()) < 0.);
     }
 
     @Disabled("Not implemented")

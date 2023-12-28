@@ -1,22 +1,27 @@
 package name.zasenko.smarty.snake;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Point implements Comparable<Point> {
     private final int x, y;
 
+    @JsonCreator
     public Point(
             @JsonProperty("y") int y,
             @JsonProperty("x") int x
     ) {
-        this.x = x;
         this.y = y;
+        this.x = x;
     }
 
+    @JsonGetter("x")
     public int x() {
         return x;
     }
 
+    @JsonGetter("y")
     public int y() {
         return y;
     }

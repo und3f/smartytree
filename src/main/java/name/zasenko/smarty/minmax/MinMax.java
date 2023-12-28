@@ -1,6 +1,5 @@
 package name.zasenko.smarty.minmax;
 
-import lombok.Getter;
 import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.context.GameStateContext;
@@ -44,7 +43,6 @@ public class MinMax {
     static class DirectionPriority implements Comparable<DirectionPriority> {
         private final double score;
 
-        @Getter
         private final Direction direction;
 
         DirectionPriority(Direction direction, double score) {
