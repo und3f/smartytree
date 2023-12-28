@@ -23,8 +23,8 @@ import java.util.logging.Logger;
 import static name.zasenko.smarty.snake.entities.responses.DetailsResponse.*;
 
 public class SnakeService implements HttpService {
-    private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
     public static final String CONFIG_PREFIX = "app.snake.";
+    private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
     private final Strategy defaultStrategy;
 
     SnakeService() {
