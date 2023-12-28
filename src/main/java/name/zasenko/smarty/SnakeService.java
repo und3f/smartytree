@@ -1,12 +1,17 @@
 package name.zasenko.smarty;
 
 import io.helidon.config.Config;
+import io.helidon.http.Status;
 import io.helidon.webserver.http.HttpRules;
 import io.helidon.webserver.http.HttpService;
 import io.helidon.webserver.http.ServerRequest;
 import io.helidon.webserver.http.ServerResponse;
+import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.context.Context;
-import name.zasenko.smarty.snake.entities.*;
+import name.zasenko.smarty.snake.entities.GameState;
+import name.zasenko.smarty.snake.entities.Ruleset;
+import name.zasenko.smarty.snake.entities.responses.DetailsResponse;
+import name.zasenko.smarty.snake.entities.responses.MoveResponse;
 import name.zasenko.smarty.snake.strategy.Constrictor;
 import name.zasenko.smarty.snake.strategy.Fill;
 import name.zasenko.smarty.snake.strategy.Strategy;
@@ -15,25 +20,16 @@ import name.zasenko.smarty.snake.strategy.StrategyFactory;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import static name.zasenko.smarty.snake.entities.responses.DetailsResponse.*;
+
 public class SnakeService implements HttpService {
-    public static final String CONFIG_PREFIX = "app.snake.";
-    public static final String DEFAULT_SKIN = "default";
     private static final Logger LOGGER = Logger.getLogger(SnakeService.class.getName());
-    private final String name;
-    private final String color;
-    private final String head;
-    private final String tail;
+    public static final String CONFIG_PREFIX = "app.snake.";
     private final Strategy defaultStrategy;
 
     SnakeService() {
-        Config config = Config.global();
-
-        this.name = config.get(CONFIG_PREFIX + "name").asString().orElse("Unnamed");
-        this.color = config.get(CONFIG_PREFIX + "color").asString().orElse("#0F0");
-        this.head = config.get(CONFIG_PREFIX + "head").asString().orElse(DEFAULT_SKIN);
-        this.tail = config.get(CONFIG_PREFIX + "tail").asString().orElse(DEFAULT_SKIN);
-
-        final String strategyName = config.get(CONFIG_PREFIX + "strategy").asString().orElse(StrategyFactory.StrategyFindFood);
+        final String strategyName = Config.global().get(CONFIG_PREFIX + "strategy")
+                .asString().orElse(StrategyFactory.StrategyFindFood);
         LOGGER.log(Level.INFO, "Building strategy {0}", strategyName);
         this.defaultStrategy = StrategyFactory.build(strategyName);
     }
@@ -48,25 +44,23 @@ public class SnakeService implements HttpService {
     }
 
     public void information(ServerRequest request, ServerResponse response) {
-        String API_VERSION = "1";
-        String AUTHOR = "Serhii Zasenko";
-        String VERSION = "0.0.1-beta";
-
-        response.send(
-                new AboutResponse(
-                        API_VERSION,
-                        name,
-                        AUTHOR,
-                        this.color,
-                        this.head,
-                        this.tail,
-                        VERSION
-                )
+        Config config = Config.global();
+        DetailsResponse details = new DetailsResponse(
+                API_VERSION,
+                config.get(CONFIG_PREFIX + "name").asString().orElse(DEFAULT_NAME),
+                AUTHOR,
+                config.get(CONFIG_PREFIX + "color").asString().orElse(DEFAULT_COLOR),
+                config.get(CONFIG_PREFIX + "head").asString().orElse(DEFAULT_SKIN),
+                config.get(CONFIG_PREFIX + "tail").asString().orElse(DEFAULT_SKIN),
+                VERSION
         );
+
+        response.send(details);
     }
 
     public void start(ServerRequest request, ServerResponse response) {
-        okResponse(response);
+        response.status(Status.NO_CONTENT_204);
+        response.send();
     }
 
     public void turn(ServerRequest request, ServerResponse response) {
@@ -75,26 +69,23 @@ public class SnakeService implements HttpService {
     }
 
     private void performTurn(GameState gameState, ServerResponse response) {
-        Strategy strategy = getStrategyForRuleset(gameState.game().ruleset().name());
+        Strategy strategy = createStrategy(gameState);
 
         LOGGER.log(Level.INFO, "Turn #{0}", gameState.turn());
         LOGGER.log(Level.FINE, "Strategy #{0}", strategy.toString());
 
-        final String move = new Context(gameState).findMove(strategy).toString();
+        final Direction move = new Context(gameState).findMove(strategy);
 
         response.send(new MoveResponse(move));
     }
 
     public void end(ServerRequest request, ServerResponse response) {
-        okResponse(response);
+        response.status(Status.NO_CONTENT_204);
+        response.send();
     }
 
-    private void okResponse(ServerResponse response) {
-        response.send(new EmptyResponse());
-    }
-
-    private Strategy getStrategyForRuleset(String ruleset) {
-        return switch (ruleset) {
+    private Strategy createStrategy(GameState state) {
+        return switch (state.game().ruleset().name()) {
             case Ruleset.CONSTRICTOR, Ruleset.WRAPPED_CONSTRICTOR -> new Constrictor();
             case Ruleset.SOLO -> new Fill();
             default -> defaultStrategy;

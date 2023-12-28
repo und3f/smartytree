@@ -1,17 +1,18 @@
 package name.zasenko.smarty;
 
+import io.helidon.http.Status;
 import io.helidon.webclient.http1.Http1Client;
 import io.helidon.webclient.http1.Http1ClientResponse;
 import io.helidon.webserver.http.HttpRouting;
 import io.helidon.webserver.testing.junit5.ServerTest;
 import io.helidon.webserver.testing.junit5.SetUpRoute;
-import name.zasenko.smarty.snake.entities.AboutResponse;
+import name.zasenko.smarty.snake.Direction;
 import name.zasenko.smarty.snake.entities.GameState;
-import name.zasenko.smarty.snake.entities.MoveResponse;
+import name.zasenko.smarty.snake.entities.responses.DetailsResponse;
+import name.zasenko.smarty.snake.entities.responses.MoveResponse;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -33,7 +34,7 @@ class MainTest extends BaseUnitTestHelper {
     @Test
     void indexTest() {
         try (var response = client.get("/").request()) {
-            AboutResponse json = response.as(AboutResponse.class);
+            DetailsResponse json = response.as(DetailsResponse.class);
             assertTrue(json.color().matches("(?i)^#[0-9A-F]{3,6}$"));
             assertTrue(json.head().matches("^[\\w-]+$"));
             assertTrue(json.tail().matches("^[\\w-]+$"));
@@ -47,7 +48,7 @@ class MainTest extends BaseUnitTestHelper {
                 .post("/start")
                 .submit(state)
         ) {
-            assertEquals(200, response.status().code());
+            assertEquals(Status.NO_CONTENT_204, response.status());
         }
     }
 
@@ -58,8 +59,7 @@ class MainTest extends BaseUnitTestHelper {
                 Http1ClientResponse response = client.post("/move").submit(gameState)
         ) {
             MoveResponse json = response.as(MoveResponse.class);
-            List<String> options = List.of("up", "down", "left", "right");
-            assertTrue(options.contains(json.move()));
+            assertEquals(Direction.up, json.move());
         }
 
     }
@@ -69,7 +69,7 @@ class MainTest extends BaseUnitTestHelper {
         var gameState = readState("sample-state");
 
         try (Http1ClientResponse response = client.post("/end").submit(gameState)) {
-            assertEquals(200, response.status().code());
+            assertEquals(Status.NO_CONTENT_204, response.status());
         }
     }
 
