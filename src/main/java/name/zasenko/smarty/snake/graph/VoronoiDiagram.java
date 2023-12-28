@@ -27,6 +27,10 @@ public class VoronoiDiagram {
         for (int y = 0; y < ctx.board().height(); y++) {
             for (int x = 0; x < ctx.board().width(); x++) {
                 Point p = new Point(y, x);
+                if (g.isObstacle(p)) {
+                    continue;
+                }
+
                 var snake = findAreaControllingSnake(ctx.state().snakes(), dijkstras, p);
                 if (snake != null) {
                     snakesAreas.get(snake.id()).add(p);
