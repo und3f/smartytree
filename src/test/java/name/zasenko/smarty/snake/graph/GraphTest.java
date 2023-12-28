@@ -22,7 +22,7 @@ public class GraphTest extends BaseUnitTestHelper {
     void TestAdjacentSimple() throws IOException {
         Context context = this.readContext("graph/state1");
         final BoardContext board = context.gameStateContext().boardContext();
-        Graph graph = new Graph(context.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(6, 0)), 0);
         List<Integer> expected = Arrays.asList(board.valueOfPoint(new Point(6, 1)));
@@ -34,7 +34,7 @@ public class GraphTest extends BaseUnitTestHelper {
         var context = this.readContext("graph/state1");
 
         final BoardContext board = context.gameStateContext().boardContext();
-        Graph graph = new Graph(context.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
 
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(0, 5)), 0);
 
@@ -49,7 +49,7 @@ public class GraphTest extends BaseUnitTestHelper {
     void PointUtilsTests() throws IOException {
         final Context ctx = this.readContext("graph/state1");
         final BoardContext board = ctx.gameStateContext().boardContext();
-        Graph graph = new Graph(ctx.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
 
         List<DirectedEdge> adjanced = graph.adj(ctx.me().head(), 0);
         assertEquals(2, adjanced.size());
@@ -77,7 +77,7 @@ public class GraphTest extends BaseUnitTestHelper {
         Context ctx = this.readContext("graph/state2");
 
         final BoardContext board = ctx.gameStateContext().boardContext();
-        Graph graph = new Graph(ctx.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
 
         final Point head = ctx.me().head();
 
@@ -99,7 +99,7 @@ public class GraphTest extends BaseUnitTestHelper {
         GameState gameState = this.readState("graph/state2");
         final Context context = new Context(gameState);
 
-        Graph graph = new Graph(context.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(context.gameStateContext());
         final String str = graph.toString();
 
         assertEquals(this.getResourceContent("output/graph-test2-output.txt"), str);
@@ -111,7 +111,7 @@ public class GraphTest extends BaseUnitTestHelper {
         GameState gameState = this.readState("graph/snail");
 
         final Context ctx = new Context(gameState);
-        Graph graph = new Graph(ctx.gameStateContext());
+        Graph graph = Graph.createGenericGameGraph(ctx.gameStateContext());
 
         final BoardContext board = ctx.gameStateContext().boardContext();
         List<DirectedEdge> adjacent = graph.adj(board.valueOfPoint(new Point(3, 2)), 0);

@@ -20,7 +20,7 @@ public class DijkstraTest extends BaseUnitTestHelper {
     void initGraph() throws IOException {
         context = this.readContext("findfood/closed");
 
-        graph = new Graph(context.gameStateContext());
+        graph = Graph.createGenericGameGraph(context.gameStateContext());
     }
 
     @Test

@@ -13,22 +13,23 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Graph {
-    public static final double MOVE_WEIGHT = 1.0;
-    public static final double DEFAULT_HAZARD_WEIGHT = 14.0;
-    protected final Map<Integer, Double> hazards;
+    public static final int MOVE_WEIGHT = 1;
+    public static final int DEFAULT_HAZARD_WEIGHT = 14;
+
+    protected final Map<Integer, Integer> hazards;
     final BoardContext board;
-    private final double hazardWeight;
+    private final int hazardWeight;
     private final Map<Integer, Integer> obstacles;
 
-    public Graph(BoardContext board, double hazardWeight) {
+    public Graph(BoardContext board, int hazardWeight) {
         this.board = board;
         this.hazardWeight = hazardWeight;
         obstacles = new TreeMap<>();
         hazards = new TreeMap<>();
     }
 
-    public Graph(GameStateContext gameStateContext) {
-        this(gameStateContext.boardContext(), gameStateContext.hazardDamage());
+    public static Graph createGenericGameGraph(GameStateContext gameStateContext) {
+        var graph = new Graph(gameStateContext.boardContext(), gameStateContext.hazardDamage());
 
         for (Snake snake : gameStateContext.snakes()) {
             int ttl = 0;
@@ -37,17 +38,29 @@ public class Graph {
             for (int i = body.size() - 1; i >= 0; i--) {
                 if (ttl > 0) {
                     Point obstacle = body.get(i);
-                    this.obstacles.put(board.valueOfPoint(obstacle), ttl);
+                    graph.obstacles.put(graph.board.valueOfPoint(obstacle), ttl);
                 }
                 ttl++;
             }
         }
 
         for (Point p : gameStateContext.hazards()) {
-            int v = board.valueOfPoint(p);
-            double weight = hazardWeight + hazards.getOrDefault(v, 0.);
-            hazards.put(board.valueOfPoint(p), weight);
+            int v = graph.board.valueOfPoint(p);
+            int weight = graph.hazardWeight + graph.hazards.getOrDefault(v, 0);
+            graph.hazards.put(graph.board.valueOfPoint(p), weight);
         }
+
+        return graph;
+    }
+
+    public static Graph createFoodHazardGraph(GameStateContext ctx) {
+        Graph graph = new Graph(ctx.boardContext(), ctx.hazardDamage());
+
+        for (Point p : ctx.food()) {
+            graph.hazards.put(graph.board.valueOfPoint(p), DEFAULT_HAZARD_WEIGHT);
+        }
+
+        return graph;
     }
 
     public int V() {

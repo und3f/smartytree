@@ -20,7 +20,7 @@ public class Context {
         this.me = me;
         this.turn = turn;
 
-        this.boardGraph = new Graph(gameStateContext);
+        this.boardGraph = Graph.createGenericGameGraph(gameStateContext);
     }
 
     public Context(GameState gameState) {

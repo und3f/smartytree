@@ -6,7 +6,6 @@ import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.graph.Graph;
-import name.zasenko.smarty.snake.graph.GraphFoodHazard;
 import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
 import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
 import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
@@ -58,7 +57,7 @@ public class Cycle implements Strategy {
         }
 
         // Try to avoid food
-        Graph foodHazard = new GraphFoodHazard(ctx.gameStateContext());
+        Graph foodHazard = Graph.createFoodHazardGraph(ctx.gameStateContext());
         Dijkstra dijkstra = new Dijkstra(foodHazard, head);
 
         if (dijkstra.findDistance(CORNER) != Double.POSITIVE_INFINITY) {
