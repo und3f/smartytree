@@ -33,4 +33,15 @@ public class LSPTest extends BaseUnitTestHelper {
         assertEquals(24, path.size());
     }
 
+    @Test
+    void testClosedSpaceExitPoint() throws IOException {
+        var context = this.readContext("fill/closed-space-exit");
+        var graph = Graph.createGenericGameGraph(context);
+        LSP lsp = new LSP(graph, context.state().me().head());
+        final List<DirectedEdge> path = lsp.findLongestPath();
+
+        assertNotNull(path);
+        assertEquals(10, path.size());
+    }
+
 }

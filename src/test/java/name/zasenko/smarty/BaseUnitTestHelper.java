@@ -41,7 +41,7 @@ public abstract class BaseUnitTestHelper {
     return new String(this.getResource(resourceFileName).readAllBytes(), StandardCharsets.UTF_8);
   }
 
-  protected Direction RunStrategy(String filename) throws IOException {
+  protected Direction runStrategy(String filename) throws IOException {
     GameState gameState = readState(filename);
 
     return new Context(gameState).findMove(StrategyFactory.build(strategy));

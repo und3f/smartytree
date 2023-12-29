@@ -6,9 +6,6 @@ import name.zasenko.smarty.snake.context.Context;
 import name.zasenko.smarty.snake.graph.Dijkstra;
 import name.zasenko.smarty.snake.graph.DirectedEdge;
 import name.zasenko.smarty.snake.graph.Graph;
-import name.zasenko.smarty.snake.strategy.filter.AvoidBorders;
-import name.zasenko.smarty.snake.strategy.filter.AvoidClosedSpaces;
-import name.zasenko.smarty.snake.strategy.filter.AvoidObstacles;
 
 import java.util.List;
 
@@ -23,10 +20,7 @@ public class Cycle implements Strategy {
         if (me.length() == 0)
             return Direction.down;
 
-        final var possibleMoves = Utils.initDirections(ctx, me);
-        new AvoidBorders().filterMoves(ctx, possibleMoves);
-        new AvoidObstacles().filterMoves(ctx, possibleMoves);
-        new AvoidClosedSpaces().filterMoves(ctx, possibleMoves);
+        final var possibleMoves = Utils.initPossibleDirections(ctx, me);
 
         if (possibleMoves.size() == 1) {
             return possibleMoves.get(0);

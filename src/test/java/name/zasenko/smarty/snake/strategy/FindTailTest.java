@@ -2,7 +2,6 @@ package name.zasenko.smarty.snake.strategy;
 
 import name.zasenko.smarty.BaseUnitTestHelper;
 import name.zasenko.smarty.snake.Direction;
-import name.zasenko.smarty.snake.strategy.StrategyFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -20,7 +19,7 @@ public class FindTailTest extends BaseUnitTestHelper {
 
   @Test
   void MoveDecisionToTail3Test() throws IOException {
-    Assertions.assertEquals(Direction.left, this.RunStrategy("avoid-tail-test2"));
+    Assertions.assertEquals(Direction.left, this.runStrategy("avoid-tail-test2"));
   }
 
 }

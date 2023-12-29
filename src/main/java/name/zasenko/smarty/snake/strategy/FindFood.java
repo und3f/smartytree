@@ -16,15 +16,7 @@ public class FindFood implements Strategy {
     @Override
     public Direction findMove(Context ctx) {
         final var gameCtx = ctx.state();
-        final var board = ctx.board();
-
         Snake me = gameCtx.me();
-        final var possibleMoves = Utils.initPossibleDirections(ctx, me);
-
-
-        if (possibleMoves.size() == 1) {
-            return Utils.moveForward(ctx, possibleMoves);
-        }
 
         Dijkstra dijkstra = new Dijkstra(ctx.boardGraph(), me.head());
 
@@ -40,9 +32,18 @@ public class FindFood implements Strategy {
 
         List<DirectedEdge> path = dijkstra.findPath(closestTarget);
         if (path == null || dijkstra.findDistance(closestTarget) > me.health()) {
-            closestTarget = me.tail();
-            path = dijkstra.findPath(closestTarget);
+            return new Fill().findMove(ctx);
         }
+
+        final var board = ctx.board();
+
+        final var possibleMoves = Utils.initPossibleDirections(ctx, me);
+
+
+        if (possibleMoves.size() == 1) {
+            return Utils.moveForward(ctx, possibleMoves);
+        }
+
 
         if (path == null || dijkstra.findDistance(closestTarget) > me.health()) {
             targets = possibleMoves.stream()
