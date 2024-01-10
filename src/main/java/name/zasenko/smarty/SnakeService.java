@@ -71,8 +71,13 @@ public class SnakeService implements HttpService {
     private void performTurn(GameState gameState, ServerResponse response) {
         Strategy strategy = createStrategy(gameState);
 
-        LOGGER.log(Level.INFO, "Turn #{0}", gameState.turn());
-        LOGGER.log(Level.FINE, "Strategy #{0}", strategy.toString());
+        LOGGER.log(Level.INFO,
+                "Game {0}, Turn {1}",
+                new Object[]{
+                        gameState.game().id(),
+                        gameState.turn()
+                });
+        LOGGER.log(Level.FINE, "Strategy {0}", strategy);
 
         final Direction move = new Context(gameState).findMove(strategy);
 

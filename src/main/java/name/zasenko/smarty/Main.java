@@ -8,7 +8,11 @@ import io.helidon.http.media.jackson.JacksonSupport;
 import io.helidon.webserver.WebServer;
 import io.helidon.webserver.http.HttpRouting;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public final class Main {
+    private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     private Main() {
     }
@@ -37,7 +41,13 @@ public final class Main {
                 .build()
                 .start();
 
-        System.out.println("SNAKE is up! http://localhost:" + server.port());
+        LOGGER.log(
+                Level.INFO,
+                "SNAKE is up! {0}:{1}/", new Object[]{
+                        "http://localhost",
+                        Integer.toString(server.port())
+                }
+        );
 
         return server;
     }
