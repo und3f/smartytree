@@ -53,7 +53,7 @@ public class Utils {
     }
 
     public static Direction moveThruPath(Context context, List<Direction> possibleMoves, List<DirectedEdge> path) {
-        if (path == null) {
+        if (path == null || path.size() == 0) {
             return moveForward(context, possibleMoves);
         }
 
