@@ -3,12 +3,13 @@ Description=Smarty Tree battlesnake service
 After=syslog.target network-online.target
 
 [Service]
-User=nobody
-Group=nobody
+User=snakeservice
+Group=snakeservice
 
 Type=simple
-WorkingDirectory=/opt/smartytree
-ExecStart=/usr/bin/java -jar /home/opc/smartytree.jar
+WorkingDirectory=/opt/snake/
+ExecStart=/usr/bin/java -XX:+UseG1GC -Xmx800m -XX:MaxGCPauseMillis=10 -jar smartytree.jar
+Restart=always
 
 [Install]
 WantedBy=network-online.target
