@@ -1,9 +1,17 @@
 # Smarty Tree battlesnake
 
-## Gameplay
+## Build
+```
+mvn clean package
+```
 
-### Standard
+## Run battlesnake server
+```
+java -jar target/smartytree.jar
+```
 
-### Constrictor
-
-### Solo
+## Supported Battlesnake modes
+- Standard
+- Constrictor
+- Solo
+- Wrapped
